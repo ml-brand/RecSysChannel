@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #27</title>
+  <meta name="description" content=" Density Weighting for Multi-Interest Personalized Recommendation   Сегодняшняя  статья от Google  посвящена репрезентации юзера в виде нескольких векторов, каждый из которых отображает некоторый инте" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/27.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #27" />
+  <meta property="og:description" content=" Density Weighting for Multi-Interest Personalized Recommendation   Сегодняшняя  статья от Google  посвящена репрезентации юзера в виде нескольких векторов, каждый из которых отображает некоторый инте" />
+  
+  <meta property="article:published_time" content="2024-10-04T09:56:10+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-3.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=27" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="27">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2024-10-04T09:56:10+00:00">2024-10-04 09:56 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Density Weighting for Multi-Interest Personalized Recommendation</strong><br><br>Сегодняшняя <a href="https://arxiv.org/abs/2308.01563" rel="nofollow noopener noreferrer">статья от Google</a> посвящена репрезентации юзера в виде нескольких векторов, каждый из которых отображает некоторый интерес пользователя. <br><br>Авторы отмечают, что использование нескольких представлений пользователя (multiple user representations, MUR) вместо одного представления (single user representation, SUR) показало свою эффективность. Однако при таком подходе огромную роль играет неравномерное распределение интересов пользователя. MUR фокусируется на головных, самых популярных интересах, из-за чего возникает просадка на более редких, хвостовых. <br><br>Чтобы решить эту проблему, авторы предлагают схему итеративного взвешивания плотности (iterative density weighting scheme, IDW). Она должна помочь справиться с дисбалансом данных и улучшить рекомендации для хвостовых элементов. IDW корректирует представление предметов в пространстве, уменьшая влияние дисбалансированных данных и улучшая кластеризацию элементов. Вот как устроена IDW:<br><br>1. Модель анализирует плотность предметов в пространстве представлений — то есть то, насколько близко друг к другу они находятся. Плотность рассчитывается для каждого предмета, чтобы понять, каких элементов слишком много (высокая плотность) и каких мало (низкая плотность).<br><br>2. На основе плотности модель корректирует веса предметов — элементы с высокой плотностью получают меньшие веса, а с низкой плотностью — большие. Это позволяет модели меньше фокусироваться на популярных предметах и больше — на редких.<br><br>3. IDW — это итеративный процесс. На каждом этапе веса пересчитываются с учётом изменённой структуры представлений предметов. Этот процесс повторяется до тех пор, пока модель не стабилизируется и не достигнет сбалансированного состояния.<br><br>4. После корректировки весов для предметов, модель дополнительно оптимизируется, чтобы улучшить рекомендации для хвостовых элементов, не снижая производительность для популярных предметов.<br><br>По результатам экспериментов на бенчмарках — MovieLens 1M, Kindle Store, а также Clothing, Shoes and Jewelry — схема IDW показала значительное улучшение рекомендаций. В метрике HR@20 для MovieLens 1M модель с IDW достигла 82,65% против 80,82% у обычной MUR, а в NDCG@20 — 49,67% против 47,72% у MUR. <br><br>На датасете Kindle Store HR@20 составил 65.24% с IDW против 64,66% у MUR, а NDCG@20 — 32.25%, тогда как у MUR было 31,16%. <br><br>На датасете Clothing, Shoes and Jewelry метрика HR@20 у IDW составила 37,34% (33.92% у MUR), а NDCG@20 — 16.33% (14.90% у MUR).<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Степан Макаренко</div>
+      <div class="actions">
+        <span>2 137 просмотров · 21 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/27" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./27.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./28.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./26.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 27, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

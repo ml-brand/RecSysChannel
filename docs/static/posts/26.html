@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #26</title>
+  <meta name="description" content=" Efficient Retrieval with Learned Similarities   Сегодня  обсуждаем статью  от Microsoft и Meta* об эффективном retrieval с обучаемыми функциями близости. Исторически нишу функций близости в retrieval" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/26.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #26" />
+  <meta property="og:description" content=" Efficient Retrieval with Learned Similarities   Сегодня  обсуждаем статью  от Microsoft и Meta* об эффективном retrieval с обучаемыми функциями близости. Исторически нишу функций близости в retrieval" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/26_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2024-09-27T12:19:16+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/26_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-3.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=26" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="26">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2024-09-27T12:19:16+00:00">2024-09-27 12:19 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Efficient Retrieval with Learned Similarities</strong><br><br>Сегодня <a href="https://arxiv.org/abs/2407.15462" rel="nofollow noopener noreferrer">обсуждаем статью</a> от Microsoft и Meta* об эффективном retrieval с обучаемыми функциями близости. Исторически нишу функций близости в retrieval занимали косинусные близости — скалярные произведения над нормализованными векторами. Но в последнее время популярность стали набирать обучаемые функции близости. Например, они допускают сопоставление одному запросу нескольких эмбеддингов, чтобы лучше улавливать редкие и противоречивые интересы пользователей. Также можно использовать нейросети над векторами запроса и векторами айтема и делать многие другие интересные вещи. Однако с эффективностью этих решений есть проблемы. <br><br>Чтобы повысить эффективность обучаемых функций близости, в статье используют Mixture-of-Logits как универсальный аппроксиматор и предлагают методы его ускорения для получения достаточно точной аппроксимации топ-k соседей. В экспериментах подход авторов обгоняет бейслайны почти в 100 раз по времени работы и при этом достигает 99% полноты/рекола. <br><br>По сути обучаемые функции близости — это попытка повысить экспрессивность функции, моделирующей релевантность. В идеале у нас есть большая матрица релевантностей, где каждому запросу сопоставлена вероятность. При переходе к обучаемым эмбеддингам мы оцениваем релевантность как dot product и пытаемся оценить логарифм матрицы низкоранговым разложением. <br><br>Если изначальная матрица имела высокий ранг, мы не получим точного разложения. Простым решением является увеличение размерности эмбеддингов, но оно может привести к проблемам с памятью и оверфиту. А MoL позволяет аппроксимировать матрицу релевантности, сохранив ее ранг.<br><br>Также авторы предлагают методы ускорения этой конструкции: несколько вариаций алгоритмов, о которых можно узнать больше из полного текста статьи, и оптимизацию GPU-кернелов вкупе с использованием более масштабных датасетов, что сделает разницу между традиционными подходами и обучаемыми функциями близости ещё более выраженной.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Сергей Макеев<br><br>—<br><em>Meta признана экстремистской организацией, а Facebook и Instagram запрещены на территории РФ</em><div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/26_480.webp" srcset="../../assets/media/thumbs/26_480.webp 480w, ../../assets/media/26.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="26" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>2 158 просмотров · 22 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/26" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./26.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./27.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./25.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 26, "media": [{"kind": "photo", "path": "../../assets/media/26.jpg", "thumb": "../../assets/media/thumbs/26_480.webp", "size": 54527, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

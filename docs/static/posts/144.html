@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #144</title>
+  <meta name="description" content=" Training Compute-Optimal Large Language Models   Сегодня разберём  статью  2022 года от DeepMind, известную также по названию модели Chinchilla. Работа посвящена проблеме правильного распределения фи" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/144.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #144" />
+  <meta property="og:description" content=" Training Compute-Optimal Large Language Models   Сегодня разберём  статью  2022 года от DeepMind, известную также по названию модели Chinchilla. Работа посвящена проблеме правильного распределения фи" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/144_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-08-28T08:05:16+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/144_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=144" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="144">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-08-28T08:05:16+00:00">2025-08-28 08:05 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Training Compute-Optimal Large Language Models<br></strong><br>Сегодня разберём <a href="https://arxiv.org/abs/2203.15556" rel="nofollow noopener noreferrer">статью</a> 2022 года от DeepMind, известную также по названию модели Chinchilla. Работа посвящена проблеме правильного распределения фиксированного компьюта между увеличением размера модели и числа токенов, на которых она учится, в домене языковых моделей. Для связи этих трёх величин существует аппроксимация C = 6ND, где C — компьют, N — число параметров, D — число токенов в датасете. Оптимальные N и D масштабируются как C^a и C^b соответственно, где a + b = 1. Задача — найти a и b.<br><br>Работа мотивирована статьей 2020 года от OpenAI — <a href="https://arxiv.org/abs/2001.08361" rel="nofollow noopener noreferrer">Scaling Laws for Neural Language Models</a>, в которой авторы заключили, что большая часть компьюта должна быть аллоцирована под масштабирование самой модели (a &gt; b). Исследователи из DeepMind приходят к другому выводу. Они выводят законы масштабирования тремя разными способами, и все три приводят к схожим результатам (a ≈ b ≈ 0,5).<br><br>Подход первый: строят график в осях FLOPs — лосс для нескольких моделей с числом параметров от 75M до 10B. Каждому числу флопсов ставится в соответствие точка с минимальным лоссом, для которой известно, какому размеру модели и числу пройденных токенов она относится. Полученные точки переносят на графики в осях FLOPs — N и FLOPs — D, регрессируют их прямой (в прологарифмированных осях), угол наклона которой задаёт a и b. В итоге: a = b = 0,5.<br><br>Подход второй: фиксируют компьют и варьируют число параметров, что автоматически задаёт число токенов для обучения. Для каждого фиксированного компьюта находят такую точку, для которой уменьшение или увеличение числа параметров приводит к ухудшению финального лосса. Снова регрессируют эти точки в осях FLOPs — N и FLOPs — D, получая a = 0,49 и b = 0,51.<br><br>Подход тертий: здесь авторы моделируют зависимость L(N, D) финального лосса от размера модели и числа пройденных токенов, используя при этом все результаты (L_final, N, D) из первых двух подходов. Благодаря этому выражению, зная компьют, можно найти оптимальное число параметров, которое будет ординатой точки касания вертикальной прямой к линии уровня L(N, D) в осях FLOPs — N (левый график). a и b оказываются равными 0,46 и 0,54 соответственно.<br><br>Главный вывод статьи, — число параметров в модели и число токенов в датасете должны масштабироваться равномерно (то есть как квадратный корень из компьюта). Например, при увеличении компьюта в четыре раза обе величины должны вырасти в два раза. <br><br>Ещё один интересный вывод авторов — модель Gopher (280B) обучили на недостаточно большом датасете. В качестве доказательства обучают в четыре раза меньшую модель Chinchilla (70B) на в четыре раза большем числе токенов, и эта модель оказывается значительно лучше Gopher.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Сергей Макеев<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/144_480.webp" srcset="../../assets/media/thumbs/144_480.webp 480w, ../../assets/media/144.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="144" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>1 773 просмотров · 19 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/144" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./144.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./145.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./143.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 144, "media": [{"kind": "photo", "path": "../../assets/media/144.jpg", "thumb": "../../assets/media/thumbs/144_480.webp", "size": 108164, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

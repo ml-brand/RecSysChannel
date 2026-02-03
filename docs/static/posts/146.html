@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #146</title>
+  <meta name="description" content=" RecGPT Technical Report, 2/2    В первой части разбора  рассказали  об идее и результатах RecGPT. Теперь — детали реализации. Как мы уже упомянули, система состоит из четырёх ключевых компонентов.   " />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/146.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #146" />
+  <meta property="og:description" content=" RecGPT Technical Report, 2/2    В первой части разбора  рассказали  об идее и результатах RecGPT. Теперь — детали реализации. Как мы уже упомянули, система состоит из четырёх ключевых компонентов.   " />
+  
+  <meta property="article:published_time" content="2025-09-08T09:01:49+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=146" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="146">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-09-08T09:01:49+00:00">2025-09-08 09:01 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>RecGPT Technical Report, 2/2 <br></strong><br>В первой части разбора <a href="https://t.me/RecSysChannel/145" rel="nofollow noopener noreferrer">рассказали</a> об идее и результатах RecGPT. Теперь — детали реализации. Как мы уже упомянули, система состоит из четырёх ключевых компонентов.<br><br><strong>User Interest Mining</strong><br><br>Главная трудность оказалась в том, что у пользователей слишком длинные истории — в среднем больше 37 тысяч событий, что не помещается в контекст LLM. Авторы придумали механизм сжатия истории: они оставляют только самые информативные события — покупки, добавления в корзину, избранное, поисковые запросы, просмотр отзывов и подробных описаний. Все эти данные дополнительно агрегируются по времени: ближайшие дни учитываются подробно, а более старые периоды объединяются сначала в месяцы, а затем и в годы. Так история превращается в понятный текстовый нарратив, который можно подать на вход модели.<br><br>Параллельно Alibaba разработали task alignment framework. Они сформулировали 16 задач — от простых (например, определить категорию товара по запросу) до более сложных (выделение ключевых характеристик, определение релевантности). LLM обучали постепенно, чтобы адаптировать её к специфике рекомендательного домена. <br><br>Вдобавок сделали self-training evolution: модели генерировали гипотезы, которые затем фильтровали, чтобы убрать галлюцинации или слишком общие интересы, и использовали отобранное для дообучения. В итоге система научилась извлекать из истории осмысленные интересы, а 98% пользователей теперь помещаются в лимит контекста и на каждого удаётся предсказать в среднем 16 интересов.<br><br><strong>Tag Prediction</strong><br><br>На основе предсказанных интересов следующая модель формирует так называемые теги — текстовые описания того, что пользователь, возможно, захочет купить. Это не конкретные товары, а их обобщённые характеристики: например, «outdoor waterproof hiking boots». К тегам есть требования: они должны опираться на историю и интересы пользователя, быть конкретными, свежими и релевантными сезону. В среднем нужно получить не меньше пятидесяти тегов.<br><br>Для обучения используют два шага. Сначала pre-alignment, когда из названий товаров в истории составляются кандидаты для тегов. Затем self-training: система дообучается на собственных же генерациях, но перед этим данные чистят и перебалансируюют. Это нужно, чтобы популярные категории не полностью доминировали и модель не теряла разнообразие. Такой подход оказался эффективным: вырос hit rate — совпадения между предсказанными тегами и реальными товарами, которые позже были куплены или просмотрены.<br><br><strong>Item Retrieval<br></strong><br>Следующий этап — сопоставление тегов с конкретными товарами. Здесь Alibaba разработали архитектуру с тремя башнями: пользовательской, товарной и теговой. Она учитывает как семантическую близость, так и коллаборативные сигналы. Для обучения используют выборку с положительными и отрицательными примерами: система учится различать товары из нужной категории и из посторонних. На этапе инференса представления из разных башен объединяются, что позволяет более точно матчить интересы и товары.<br><br><strong>Personalized Explanation</strong><br><br>Наконец, один из самых заметных элементов — генерация объяснений. Вместо того чтобы каждый раз формировать объяснение заново для пары «пользователь-товар», в Alibaba сделали ставку на связку «интерес-товар». Это экономит ресурсы и сохраняет персонализацию. Датасет для обучения объяснений собирали через другую LLM и фильтровали от галлюцинаций. Дополнительный self-training помог адаптировать модель к новым ситуациям. В итоге рекомендации сопровождаются короткими и понятными комментариями вроде «Мы показали вам этот товар, потому что вы недавно искали похожие вещи для путешествий».<br><br>В итоге, RecGPT — это не просто «LLM в рексистеме», а целый пайплайн: от сжатия пользовательской истории и извлечения интересов до генерации тегов, матчинга и интерпретируемых объяснений.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Виктор Януш</div>
+      <div class="actions">
+        <span>2 007 просмотров · 24 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/146" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./146.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./147.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./145.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 146, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

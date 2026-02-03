@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #137</title>
+  <meta name="description" content=" Blending Sequential Embeddings, Graphs, and Engineered Features: 4th Place Solution in RecSys Challenge 2025   Сегодня рассказываем  о статье , в которой описано решение от команды исследователей из " />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/137.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #137" />
+  <meta property="og:description" content=" Blending Sequential Embeddings, Graphs, and Engineered Features: 4th Place Solution in RecSys Challenge 2025   Сегодня рассказываем  о статье , в которой описано решение от команды исследователей из " />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/137_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-08-12T09:10:01+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/137_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-2.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=137" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="137">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-08-12T09:10:01+00:00">2025-08-12 09:10 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Blending Sequential Embeddings, Graphs, and Engineered Features: 4th Place Solution in RecSys Challenge 2025<br></strong><br>Сегодня рассказываем <a href="https://arxiv.org/abs/2508.06970" rel="nofollow noopener noreferrer">о статье</a>, в которой описано решение от команды исследователей из Яндекса, получившее в этом году четвёртое место на конкурсе <a href="https://recsys.acm.org/recsys25/challenge/" rel="nofollow noopener noreferrer">RecSys Challenge</a>. Статью также приняли на конференцию <a href="https://recsys.acm.org/recsys25/" rel="nofollow noopener noreferrer">RecSys 2025</a>. <br><br>Челлендж был посвящён области e-commerce. В этом направлении рекомендательные модели обучают предсказывать разные виды сигналов: конверсии, релевантные товары и их категории, сумму, которую потратит клиент, и многое другое. Целью челленджа было обучить эмбеддинг пользователя, который объединил бы разнородные сигналы. Затем организаторы использовали этот эмбеддинг, чтобы обучить независимые модели под шесть разных задач, вроде тех, что описаны выше. <br><br>Как видно на картинке, для построения такого эмбеддинга предлагается сконкатенировать векторы от четырёх моделей: трансформера, выбор которого мотивирован подходом <a href="https://t.me/RecSysChannel/133" rel="nofollow noopener noreferrer">ARGUS</a>, графовой нейросети TwHIN, DCN-v2-эмбеддингов и стандартизованных счётчиков. <br><br>Взаимодействия пользователей, предоставленные участникам, носят упорядоченный последовательный характер, поэтому важная часть решения — модель, кодирующая последовательности, — трансформер. В качестве истории пользователя брались все типы событий: добавления и удаления из корзины, покупки, посещённые страницы и запросы. <br><br>Трансформер в генеративной постановке учился предсказывать тип следующего взаимодействия, время до него, следующую посещённую страницу, а также следующий товар. DCN-v2-модель училась поверх эмбеддинга из трансформера и множества счётчиков, прошедших через кусочно-линейное кодирование, предсказывать отток клиентов, а также актуальные товары и категории, с которыми провзаимодействует пользователь. Графовая модель TwHIN обучалась предсказывать связи (добавления в корзину и покупки) между пользователем и товаром. Счётчики считались по разным временным промежуткам, тематическим кластерам и ценовым сегментам, а для учёта временных зависимостей использовалось экспоненциальное взвешивание. Подробный разбор всех счётчиков доступен <a href="https://arxiv.org/abs/2508.06970" rel="nofollow noopener noreferrer">в приложении к статье</a>. <br><br>Получившийся ансамбль показал качество, сопоставимое с более сложными решениями (из десятков моделей), и занял четвёртое место в финальном лидерборде. <br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em><em> </em>Сергей Макеев<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/137_480.webp" srcset="../../assets/media/thumbs/137_480.webp 480w, ../../assets/media/137.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="137" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>1 876 просмотров · 30 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/137" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./137.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./138.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./133.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 137, "media": [{"kind": "photo", "path": "../../assets/media/137.jpg", "thumb": "../../assets/media/thumbs/137_480.webp", "size": 59789, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

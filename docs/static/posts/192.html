@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #192</title>
+  <meta name="description" content=" TBGRecall: A Generative Retrieval Model for E-commerce Recommendation Scenarios   Разбираем  работу  Alibaba, архитектурно напоминающую  ARGUS , используемый в Рекламе Яндекса. Модель TBG Recall, опи" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/192.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #192" />
+  <meta property="og:description" content=" TBGRecall: A Generative Retrieval Model for E-commerce Recommendation Scenarios   Разбираем  работу  Alibaba, архитектурно напоминающую  ARGUS , используемый в Рекламе Яндекса. Модель TBG Recall, опи" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/192_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-10-30T09:17:01+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/192_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=192" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="192">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-10-30T09:17:01+00:00">2025-10-30 09:17 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>TBGRecall: A Generative Retrieval Model for E-commerce Recommendation Scenarios<br></strong><br>Разбираем <a href="https://arxiv.org/pdf/2508.11977" rel="nofollow noopener noreferrer">работу</a> Alibaba, архитектурно напоминающую <a href="https://arxiv.org/pdf/2302.07589" rel="nofollow noopener noreferrer">ARGUS</a>, используемый в Рекламе Яндекса. Модель TBG Recall, описанная в статье, генерирует кандидатов для главной страницы Taobao, крупнейшего e-commerce-сервиса компании.<br><br>Во многих работах для рекомендаций применяются генеративные и последовательные модели, но они предполагают, что история пользователя — это строгая последовательность событий. В e-commerce всё иначе: пользователь делает запрос и получает «пачку» товаров, потом ещё одну — внутри таких пачек никакой упорядоченности нет, поэтому обычные sequence-based-подходы здесь работают не совсем корректно.<br><br>В качестве решения авторы вводят предсказание следующей сессии, где сессия понимается как один запрос пользователя. Модель учится предсказывать, какие товары пользователь увидит в следующей выдаче.Также в работе используют incremental training, чтобы регулярно обновлять модель на свежих данных без перерасхода GPU.<br><br><strong>Архитектура<br></strong><br>Как уже сказали, в основе TBGRecall — next session prediction: история пользователя кодируется в вектор и сравнивается с векторами кандидатов через ANN-индекс, как в классических двухбашенных моделях. Слово «генеративная» в названии относится не к инференсу, а к способу обучения — авторегрессионному.<br><br>В начале каждой сессии стоит контекстный токен — обобщённое описание запроса. При инференсе он формируется из текущего контекста пользователя и напрямую влияет на итоговый вектор, с которым рекомендательная система делает запрос в индекс. По нашим наблюдениям, контекстные токены дают почти двукратный прирост качества — особенно в сервисах вроде Поиска и Рекламы, где контекст крайне важен.<br><br><strong>Кодирование и обучение</strong><br><br>Каждое событие описывается набором признаков: Item ID, Action, SideInfo (ID продавца или категория), Context и Timestamp. Вход модели — сумма этих векторов. Сначала они проходят через tower-модули, а затем через HSTU-блоки. Для контекстных и айтемных токенов используются отдельные tower-модули — небольшие проекции, без которых качество падает (что совпадает с нашим опытом в ARGUS).<br><br>Основная схема обучения — session-wise autoregressive approach с маской внимания, которая не позволяет айтемам внутри одной сессии «видеть» друг друга. Также применяется session-wise ROPE (sw-ROPE) — позиционные эмбеддинги, нумерующие сессии. Мы пока не видели стабильного выигрыша от подобных схем, но идея любопытная.<br><br>Лосс состоит из трёх частей:<br>1. Lnce — воспроизводит логирующую политику, учит отличать реальные айтемы в сессии от случайных негативов.<br>2. Lclick — отличает кликнутые айтемы от показанных.<br>3. Lpay — отличает купленные от всех прочих.<br><br>Все три компоненты считаются по разным продуктовым сценариям и взвешиваются по числу сессий в них. Отдельного претрейна или fine-tune-фазы, как в ARGUS, нет — всё обучение проходит за один этап.<br><br><strong>Инференс и результаты<br></strong><br>В проде модель работает не в реальном времени: кандидаты пересчитываются асинхронно и обновляются с небольшой задержкой. Авторы считают, что контекст пользователя меняется нечасто, поэтому такая схема не вредит качеству.<br><br>На закрытом датасете (около 2 трлн записей) TBGRecall превзошёл собственный dual-tower baseline компании. В A/B-тестах модель показала +0,5% по числу транзакций и +2% по обороту. Новый кандидат-генератор теперь отвечает за 24% показов на поверхности Guess You Like — одной из ключевых страниц Taobao.<br><br>В целом, TBGRecall — это шаг от классической двухбашенной архитектуры к генеративному обучению. Контекстные токены дают сильный прирост, MoE и SW-ROPE работают стабильно, а near-line-инференс показывает себя лучше, чем ожидалось.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Николай Савушкин<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/192_480.webp" srcset="../../assets/media/thumbs/192_480.webp 480w, ../../assets/media/192.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="192" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>1 878 просмотров · 31 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/192" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./192.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./193.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./191.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 192, "media": [{"kind": "photo", "path": "../../assets/media/192.jpg", "thumb": "../../assets/media/thumbs/192_480.webp", "size": 70312, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

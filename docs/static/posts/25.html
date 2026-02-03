@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #25</title>
+  <meta name="description" content=" Diffusion Model for Slate Recommendation   Разбираем свежую  статью от Spotify  о диффузионных моделях для рекомендации слейтов. Слейт — что-то вроде списка событий произвольной длины. Самый простой " />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/25.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #25" />
+  <meta property="og:description" content=" Diffusion Model for Slate Recommendation   Разбираем свежую  статью от Spotify  о диффузионных моделях для рекомендации слейтов. Слейт — что-то вроде списка событий произвольной длины. Самый простой " />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/25_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2024-09-20T08:48:57+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/25_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-3.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=25" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="25">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2024-09-20T08:48:57+00:00">2024-09-20 08:48 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Diffusion Model for Slate Recommendation</strong><br><br>Разбираем свежую <a href="https://www.arxiv.org/abs/2408.06883" rel="nofollow noopener noreferrer">статью от Spotify</a> о диффузионных моделях для рекомендации слейтов. Слейт — что-то вроде списка событий произвольной длины. Самый простой пример слейта — плейлист с музыкой. Особенность таких рекомендаций в том, что помимо генерации кандидатов для показа необходимо ещё и ранжирование, так мы получаем пачку, внутри которой объекты должны быть расположены в определённом порядке. В идеале с приносящем как можно больше удовольствия пользователю. <br><br>Ранжирование объектов — важная подзадача в рамках рекомендации слейтов, и для её решения авторы статьи используют отдельные модели, но в данной работе концентрируются на retrieval-части, рассказывая, чем хороши диффузионки. В качестве примеров похожих работ они ссылаются на 2 статьи от Google, за <a href="https://arxiv.org/abs/1512.01124" rel="nofollow noopener noreferrer">2015</a> и <a href="https://arxiv.org/abs/1905.12767" rel="nofollow noopener noreferrer">2019</a> год, где для решения аналогичной задачи используется RL. Проблема в том, что айтемы в слейте являются в RL-подходе независимыми событиями. Это упрощает обучение, но такой подход не совсем корректен, так как зависимость между соседними айтемами в слейте все же есть, что приводит к проблемам с качеством генерации.<br><br>Исследователи из Spotify утверждают, что генеративный подход (а именно — диффузионные модели) могут работать лучше, чем RL-like подходы. Диффузионки могут сделать слейт разнообразнее благодаря неявному пониманию, что айтемы не должны быть слишком похожими. Также авторы замечают, что диффузионные модели помогают бороться с popularity bias’ом и включать в подборки менее очевидные треки даже без явного обучения под эту задачу. Также авторы делают conditioning на весь контекст — профиль и запрос пользователя. Опционально в контекст добавляют отдельные айтемы из слейта, которые уже были предсказаны.<br><br>По словам исследователей, такой метод даёт значимо лучшие результаты, чем RL и другие привычные решения в сфере рекомендаций слейтов.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Владимир Байкалов<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/25_480.webp" srcset="../../assets/media/thumbs/25_480.webp 480w, ../../assets/media/25.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="25" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>2 034 просмотров · 27 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/25" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./25.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./26.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./24.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 25, "media": [{"kind": "photo", "path": "../../assets/media/25.jpg", "thumb": "../../assets/media/thumbs/25_480.webp", "size": 69162, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

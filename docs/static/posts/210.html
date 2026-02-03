@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #210</title>
+  <meta name="description" content=" Orthogonal Low Rank Embedding Stabilization   Сегодня разбираем  статью  от авторов из Netflix о стабилизации обучаемых эмбедов пользователя/документа. В двухбашенной архитектуре с поздним связывание" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/210.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #210" />
+  <meta property="og:description" content=" Orthogonal Low Rank Embedding Stabilization   Сегодня разбираем  статью  от авторов из Netflix о стабилизации обучаемых эмбедов пользователя/документа. В двухбашенной архитектуре с поздним связывание" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/210_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-01-22T08:04:13+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/210_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=210" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="210">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-01-22T08:04:13+00:00">2026-01-22 08:04 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Orthogonal Low Rank Embedding Stabilization<br></strong><br>Сегодня разбираем <a href="https://arxiv.org/abs/2508.07574v1" rel="nofollow noopener noreferrer">статью</a> от авторов из Netflix о стабилизации обучаемых эмбедов пользователя/документа. В двухбашенной архитектуре с поздним связыванием классическая проблема при дообучении — «разворот» пространств эмбеддингов пользователя/документа при сохранении результирующего dot product. Это происходит из-за того, что отдельные координаты эмбедов (например 1-я или i-ная координата вектора документа) не имеют никакого специального смысла, важно лишь их суммарное взаимодействие с соответствующим вектором пользователя. <br><br>Из-за нестабильности приходится пересчитывать эмбеддинги <strong>всех</strong> айтемов после каждого этапа дообучения модели, что увеличивает затраты на вычисления. Также необходимо синхронизировать версии пользовательской и документной частей моделей, что зачастую невозможно.<br><br>Авторы статьи предлагают элегантное решение проблемы, комбинируя две идеи: <br>- эффективное сингулярное разложение матрицы взаимодействий пользователя/документа;<br>- приведение к выбранному референсному пространству с помощью ортогональной задачи Прокруста.<br><br>Обозначим таблицу эмбеддингов документов как T (размерностью n * e, где n — количество документов, а e — размерность эмбеддингов), а таблицу эмбеддингов пользователей — как W (размерностью m * e, где m — количество пользователей). Тогда их произведение будет иметь смысл матрицы взаимодействий (X=TWᵀ). Сами документные и пользовательские эмбеддинги могут быть нестабильны при обучении: даже небольшие пертурбации в начальных условиях приводят к существенно разным результатам. При этом сингулярное разложение матрицы взаимодействий остаётся единственным с точностью до знаков сингулярных векторов.<br><br>Однако получить напрямую SVD-разложение матрицы X вычислительно сложно: O(mn²). В статье предлагают воспользоваться тем, что матрица X — это произведение двух низкоранговых матриц TWᵀ, и сделать QR-разложение каждой из них, что линейно по сложности относительно n и m. А затем сделать SVD-разложение уже низкоранговой (e * e) матрицы RₜRwᵀ, SVD(RₜRwᵀ)=UᵣSVᵣᵀ.<br><br>Кроме самого сингулярного разложения X потребуются ещё и матрицы перехода в новое пространство для T и W (Mₜ и Mw соответственно), такие чтоб TMₜ = US¹ᐟ², а WMw = VS¹ᐟ², что сохранит матрицу взаимодействий X: TMₜ(WMw)ᵀ = USV = TWᵀ. Однако, имея сингулярное разложение RₜRwᵀ, их вычислить несложно: Mₜ = Rwᵀ Vᵣ S⁻¹ᐟ²; Mw = Rₜᵀ Uᵣ S⁻¹ᐟ².<br><br>Второй шаг — перевести полученное стандартизированное представление эмбеддингов к некому референсному пространству. В качестве такого можно выбрать результат произвольной версии модели (например, первый) и зафиксировать его. <br><br>Дальше задача сводится к поиску матрицы, отображающей получившееся на очередном шаге дообучения представление в референсное пространство. Хотя такое отображение можно искать среди произвольных матриц, удобно ограничить поиск только среди ортогональных. Формально, имея матрицы Tₖ (текущее пространство) и T₀ (референсное пространство) требуется найти такую ортогональную матрицу R, что RTₖ ~= T₀. Эта задача называется ортогональной задачей Прокруста. <br><br>Финально, получив матрицы отображения на первом (Mₜ и Mw) и втором (R) шагах, мы имеем преобразование, которое стабилизует пространства эмбеддингов документов (MₜR) и пользователей (MwR). Так как преобразование ортогональное, то значения матрицы взаимодействий не меняются. При этом размерность матрицы — e * e, что делает её хранение и применение очень лёгкой операцией, которую можно добавить последним слоем нейросети.<br><br>Предложенный в статье способ не зависит от выбранной модели и легко добавляется в любой пайплайн обучения или инференса, что позволяет стабилизировать эмбеды при дообучении. <br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Артём Ваншулин<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/210_480.webp" srcset="../../assets/media/thumbs/210_480.webp 480w, ../../assets/media/210.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="0" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/211_480.webp" srcset="../../assets/media/thumbs/211_480.webp 480w, ../../assets/media/211.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="1" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/212_480.webp" srcset="../../assets/media/thumbs/212_480.webp 480w, ../../assets/media/212.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="2" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/213_480.webp" srcset="../../assets/media/thumbs/213_480.webp 480w, ../../assets/media/213.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="3" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/214_480.webp" srcset="../../assets/media/thumbs/214_480.webp 480w, ../../assets/media/214.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="4" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/215_480.webp" srcset="../../assets/media/thumbs/215_480.webp 480w, ../../assets/media/215.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="5" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/216_480.webp" srcset="../../assets/media/thumbs/216_480.webp 480w, ../../assets/media/216.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="210" data-image-index="6" /></div></div>
+      <div class="actions">
+        <span>1 195 просмотров · 26 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/210" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./210.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./217.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./209.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 210, "media": [{"kind": "photo", "path": "../../assets/media/210.jpg", "thumb": "../../assets/media/thumbs/210_480.webp", "size": 88602, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/211.jpg", "thumb": "../../assets/media/thumbs/211_480.webp", "size": 106818, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/212.jpg", "thumb": "../../assets/media/thumbs/212_480.webp", "size": 103137, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/213.jpg", "thumb": "../../assets/media/thumbs/213_480.webp", "size": 83974, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/214.jpg", "thumb": "../../assets/media/thumbs/214_480.webp", "size": 117187, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/215.jpg", "thumb": "../../assets/media/thumbs/215_480.webp", "size": 98307, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/216.jpg", "thumb": "../../assets/media/thumbs/216_480.webp", "size": 115031, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

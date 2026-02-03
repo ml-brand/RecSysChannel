@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #38</title>
+  <meta name="description" content=" Интересное с ACM RecSys 2024, часть 3   Конференция завершилась, ребята вернулись домой, но продолжают делиться с нами обзорами интересных и актуальных статей, а мы и рады их опубликовать! Сегодня в " />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/38.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #38" />
+  <meta property="og:description" content=" Интересное с ACM RecSys 2024, часть 3   Конференция завершилась, ребята вернулись домой, но продолжают делиться с нами обзорами интересных и актуальных статей, а мы и рады их опубликовать! Сегодня в " />
+  
+  <meta property="article:published_time" content="2024-10-23T09:54:49+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-3.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=38" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="38">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2024-10-23T09:54:49+00:00">2024-10-23 09:54 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Интересное с ACM RecSys 2024, часть 3</strong><br><br>Конференция завершилась, ребята вернулись домой, но продолжают делиться с нами обзорами интересных и актуальных статей, а мы и рады их опубликовать! Сегодня в эфире — довольно подробный разбор статьи <a href="https://roegen-recsys2024.github.io/papers/enrico_text2tracks.pdf" rel="nofollow noopener noreferrer">Text2Tracks: Generative Track Retrieval for Prompt-based Music Recommendation</a>.<br><br>Авторы рассматривают задачу рекомендации музыки на основе текстовых запросов, например, “old school rock ballads to relax”, “songs to sing in the shower” и т. д. Исследуется эффективность модели на широких запросах, не подразумевающих конкретного артиста или трека. Рекомендовать трек по текстовому запросу можно разными путями. Например, задать вопрос языковой модели, распарсить ответ и найти треки через поиск. Это может привести к галлюцинациям или неоднозначности поиска — иногда совершенно разные треки могут иметь одно название. Кроме того, предсказание может занимать много времени и требовать больших вычислительных ресурсов.<br><br>Авторы предлагают дообучить модель типа encoder-decoder (flan-t5-base), которая по текстовому входу смогла бы генерировать идентификатор трека напрямую, вдохновившись подходом <a href="https://arxiv.org/abs/2202.06991" rel="nofollow noopener noreferrer">differentiable search index</a>. Основной вопрос, на который дают ответ в статье — как лучше кодировать трек? Для этого сравнивают несколько подходов:<br>— Трек кодируется случайным натуральным числом, которое подаётся на вход в виде текста. Например “1001”, “111”<br>— Трек котируется как два числа: ID артиста и ID трека внутри артиста. То есть треки артиста 1 будут представляться как “1_1”, “1_2” … Для топ 50к артистов добавляют отдельные токены с словарь.<br>— Каждый трек описывается списком ID на основе иерархической кластеризации контентного (названия плейлистов с треком) или коллаборативных ембеддингов (word2vec). Для каждого кластера добавляется отдельный токен.<br><br>Эти стратегии значительно сокращают количество токенов, необходимых для представления трека по сравнению с текстовым описанием. Результат получился следующий: лучше всего себя показал второй подход (ID артиста + ID трека в нём). При этом хуже всего себя показали подходы с кластеризацией коллаборативных ембеддингов и ID трека в виде натурального числа. <br><br>В качестве основных бейзлайнов авторы используют popularity, bm25 и двухбашенный энкодер (all-mpnet-base-v2), который файнтюнят c multiple negatives ranking loss. Сравнивают модели на трёх датасетах: MPD 100k, CPCD и редакционные плейлисты Spotify. Исследователи показывают, что их модель значительно лучше бейзлайнов на всех датасетах. В будущем они планируют изучить возможности моделей с архитектурой decoder-only и использование пользовательской истории для персонализации рекомендаций.<br><br>@RecSysChannel #YaACMRecSys<br>Обзор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Пётр Зайдель</div>
+      <div class="actions">
+        <span>2 513 просмотров · 16 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/38" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./38.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./39.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./34.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 38, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

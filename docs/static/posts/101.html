@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #101</title>
+  <meta name="description" content=" Unified Embedding: Battle-Tested Feature Representations for Web-Scale ML Systems   Сейчас в RecSys много говорят о семантических ID для кодирования айтемов. У нас в «Рекомендательной» уже были матер" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/101.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #101" />
+  <meta property="og:description" content=" Unified Embedding: Battle-Tested Feature Representations for Web-Scale ML Systems   Сейчас в RecSys много говорят о семантических ID для кодирования айтемов. У нас в «Рекомендательной» уже были матер" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/101_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-05-14T08:03:31+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/101_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-2.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=101" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="101">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-05-14T08:03:31+00:00">2025-05-14 08:03 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Unified Embedding: Battle-Tested Feature Representations for Web-Scale ML Systems</strong><br><br>Сейчас в RecSys много говорят о семантических ID для кодирования айтемов. У нас в «Рекомендательной» уже были материалы о разных алгоритмах с этой техникой:<br><br>• <a href="https://t.me/RecSysChannel/52" rel="nofollow noopener noreferrer">Recommender Systems with Generative Retrieval<br></a>• <a href="https://t.me/RecSysChannel/76" rel="nofollow noopener noreferrer">From Features to Transformers: Redefining Ranking for Scalable Impact</a><br>• <a href="https://t.me/RecSysChannel/79" rel="nofollow noopener noreferrer">OneRec: Unifying Retrieve and Rank with Generative Recommender and Iterative Preference Alignment</a><br>• <a href="https://t.me/RecSysChannel/100" rel="nofollow noopener noreferrer">Learnable Item Tokenization for Generative Recommendation</a><br><br>Но также вспомним классические методы кодирования айтемов. Один из популярных и очень мощных на практике — <a href="https://arxiv.org/abs/2305.12102" rel="nofollow noopener noreferrer">Multisize Unified Embeddings</a>. Он предоставляет способ кодирования набора категориальных признаков произвольной кардинальности в единый вектор.<br><br>Как это работает. <br><br>Пусть дан набор айтемов D={x₁,…,x_N}. Каждый из них описан T категориальными признаками x = [v₁,…,v_T], где vₜ∈Vₜ. <br><br><strong>Классические подходы к кодированию</strong><br><br>1. Collisionless (без коллизий)  <br>– Для каждого признака t и каждого его значения vₜ хранится отдельный вектор-эмбеддинг.  <br>– Плюс: нет коллизий.  <br>– Минус: память растёт пропорционально сумме кардинальностей всех Vₜ.<br><br>2. Hash Table (feature hashing)  <br>– Каждое значение одного признака хешируется в таблицу размера M.  <br>– Плюс: фиксированный объём памяти, независимо от числа значений.  <br>– Минус: внутрипризнаковые коллизии искажают градиенты и ухудшают качество.<br><br><strong>Подход Unified Table  <br></strong><br>Авторы предлагают объединить всё в одну общую хеш-таблицу размера M, но использовать для каждого признака свою хеш-функцию hₜ:  <br>– Плюс: только одна таблица, всего два гиперпараметра (M и параметры хеша).  <br>– Минус: появляются межпризнаковые коллизии, когда значения разных признаков попадают в один и тот же бакет.<br><br>Полученные эмбеддинги всех признаков конкатенируют, а затем подают в последующую нейросеть.<br><br>Теоретический анализ из статьи показывает:<br>– Межпризнаковые коллизии (случай t≠s, когда hₜ(v) и hₛ(u) уходят в один бакет) нейтрализуются последующей нейросетью: для каждой группы модель учит почти ортогональные проекции. Такие коллизии не влияют на качество.<br>– Внутрипризнаковые коллизии (разные v₁,v₂∈Vₜ хешируются в один бакет) создают устойчивое смещение градиента и ухудшают качество решаемой задачи.<br><br><strong>Улучшение: Multisize Unified Table  </strong><br><br>Для каждого признака t вместо одного хеша используют сразу k независимых хеш-функций hₜ¹…hₜᵏ→[1…M].  <br>– «Плохие» внутрипризнаковые коллизии почти исчезают;  <br>– Объём памяти остаётся таким же, как в Unified Table.<br><br><strong>Итог  </strong><br><br>Multisize Unified Embeddings дают качество, сопоставимое с отдельными таблицами эмбеддингов, но требуют в разы меньше памяти и отлично масштабируются на web-scale.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji>  Артём Матвеев<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/101_480.webp" srcset="../../assets/media/thumbs/101_480.webp 480w, ../../assets/media/101.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="101" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>2 094 просмотров · 26 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/101" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./101.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./102.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./100.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 101, "media": [{"kind": "photo", "path": "../../assets/media/101.jpg", "thumb": "../../assets/media/thumbs/101_480.webp", "size": 22457, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

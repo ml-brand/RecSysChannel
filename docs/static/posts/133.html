@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #133</title>
+  <meta name="description" content=" Scaling Recommender Transformers to One Billion Parameters   Инженеры из группы исследования перспективных рекомендательных технологий выложили на  arXiv  статью о подходе ARGUS, которому ранее посвя" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/133.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #133" />
+  <meta property="og:description" content=" Scaling Recommender Transformers to One Billion Parameters   Инженеры из группы исследования перспективных рекомендательных технологий выложили на  arXiv  статью о подходе ARGUS, которому ранее посвя" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/133_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-07-25T10:15:13+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/133_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-2.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=133" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="133">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-07-25T10:15:13+00:00">2025-07-25 10:15 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Scaling Recommender Transformers to One Billion Parameters<br></strong><br>Инженеры из группы исследования перспективных рекомендательных технологий выложили на <a href="https://www.arxiv.org/abs/2507.15994" rel="nofollow noopener noreferrer">arXiv</a> статью о подходе ARGUS, которому ранее посвятили <a href="https://youtu.be/i6pxQNjtjF4?si=vt_kDSC7jEAUGSz7" rel="nofollow noopener noreferrer">рассказ на Датафесте</a> и <a href="https://habr.com/ru/companies/yandex/articles/919058/" rel="nofollow noopener noreferrer">пост на Хабре</a>. Сейчас статья находится на <a href="https://t.me/inforetriever/239" rel="nofollow noopener noreferrer">ревью на KDD’26</a>, но текст уже доступен для всех желающих.<br><br>В статье команда авторов делится опытом по масштабированию рекомендательных трансформеров, вдохновлённым нашумевшей работой <a href="https://t.me/RecSysChannel/48" rel="nofollow noopener noreferrer">Actions Speak Louder than Words</a>.<br><br>В моделях Sequential Recommendation можно выделить четыре оси масштабирования: число параметров в таблице эмбеддингов, длина истории пользователя, размер датасета и количество параметров в трансформере. В то время как матрицы эмбеддингов могут содержать миллиарды параметров, а датасеты достигать триллионов токенов, размеры индустриальных трансформеров всё ещё остаются чрезвычайно малы в сравнении с языковыми моделями — сотни миллионов параметров. Авторам удалось обучить трансформер с миллиардом параметров на датасете из Яндекс Музыки и добиться прироста метрик. <br><br>Команда верит, что для успешного масштабирования рекомендательный трансформер должен предобучаться на фундаментальную задачу. Оказывается, Next Item Prediction может быть недостаточно — нужно уметь не только имитировать поведение предыдущей рекомендательной модели, породившей взаимодействия, но и корректировать её навыки. Другими словами, помимо предсказания следующего взаимодействия полезно научиться оценивать его. <br><br>Естественный способ это сделать — представить историю в виде пар токенов (item, feedback), из айтема предсказывать фидбек, а из фидбека — следующий айтем. Поскольку каждое взаимодействие представляется парой токенов, длина истории вырастает в два раза, увеличивая вычислительные затраты. Поэтому на практике каждое взаимодействие представляли одним токеном, а предсказание фидбека обуславливали на следующий айтем. <br><br>Поскольку модель предобучается не только на рекомендательном трафике, но и на органическом, да ещё и без задержки (которая появляется при offline-применении), возникает необходимость в дообучении под финальную задачу. Для этого авторы в том же авторегрессивном формате обучили модель на попарное ранжирование кандидатов с нужной задержкой. <br><br>Офлайн-эксперименты провели для четырёх размеров трансформера, наращивая число параметров экспоненциально: стартуя с 3,2 млн и заканчивая 1,007 млрд. Оказалось, что полученные результаты согласуются с законом масштабирования. <br><br>ARGUS уже внедрили в Яндекс Музыку, увеличив вероятность лайка на 6,37% и TLT на 2,26%. Внедрение оказалось самым успешным среди всех нейросетей в Музыке. А ещё ARGUS внедрили в Алису, Маркет, Лавку, и другие сервисы Яндекса.<br><br>Подробнее о решении можно прочитать в <a href="https://www.arxiv.org/abs/2507.15994" rel="nofollow noopener noreferrer">статье</a>.<br><br>Статью написали <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Кирилл Хрыльченко, Артём Матвеев, Сергей Макеев, Владимир Байкалов<br><br>@RecSysChannel<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/133_480.webp" srcset="../../assets/media/thumbs/133_480.webp 480w, ../../assets/media/133.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="133" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>2 477 просмотров · 38 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/133" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./133.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./137.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./123.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 133, "media": [{"kind": "photo", "path": "../../assets/media/133.jpg", "thumb": "../../assets/media/thumbs/133_480.webp", "size": 32591, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

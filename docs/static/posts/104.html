@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #104</title>
+  <meta name="description" content=" Language Representations Can be What Recommenders Need: Findings and Potentials   Разбираем одну из самых  интересных статей  на тему рекомендательных систем с ICLR 2025. Её авторы задаются вопросом:" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/104.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #104" />
+  <meta property="og:description" content=" Language Representations Can be What Recommenders Need: Findings and Potentials   Разбираем одну из самых  интересных статей  на тему рекомендательных систем с ICLR 2025. Её авторы задаются вопросом:" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/104_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2025-06-06T08:03:58+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/104_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-2.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=104" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="104">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-06-06T08:03:58+00:00">2025-06-06 08:03 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Language Representations Can be What Recommenders Need: Findings and Potentials</strong><br><br>Разбираем одну из самых <a href="https://arxiv.org/abs/2407.05441" rel="nofollow noopener noreferrer">интересных статей</a> на тему рекомендательных систем с ICLR 2025. Её авторы задаются вопросом: действительно ли LLM неявно кодируют информацию о предпочтениях пользователей. В работе предлагается использовать эмбеддинги айтемов из LLM для улучшения качества рекомендаций.<br><br>В начале статьи упоминается, что LLM хорошо показывают себя во многих доменах, а также приводится обзор вариантов их применения к ранжированию в рекомендательных системах. Один из таких вариантов — использовать замороженную языковую модель для получения эмбеддинга текста/названия айтема, а затем — дообучать линейный слой для подсчёта итогового представления айтема.<br><br>Таким образом можно извлечь и представление пользователя, усреднив эмбеддинги айтемов из его истории взаимодействий. Представления пользователей и айтемов затем используются для получения скора ранжирования (например, с помощью dot-product). <br><br>Этот подход немного улучшает качество существующих методов, и авторы задумываются о причинах этого улучшения. Они отмечают, что фильмы на разные темы близки в пространстве языковых эмбеддов (например, запросы пользователей) и в пространстве непосредственно айтемов (например, названия фильмов). Внимание акцентируют на линейном отображении, которое позволяет кластеризовать эмбеддинги айтемов, отображая схожесть пользователей, которые ими интересуются.<br><br>В статье рассуждают о нескольких вариантах кодирования айтемов: с использованием ID и матриц эмбеддов, с использованием LLM. У первого подхода есть недостатки: например, плохая переносимость эмбеддингов между доменами и отсутствие явной возможности распознавать намерения пользователей. Их и призван нивелировать второй подход.<br><br>Главные вопросы, на которые хотят ответить в статье: кодируют ли LLM коллаборативный сигнал и насколько наличие сигнала зависит от размеров модели. Сравниваясь с существующими методами на модельных датасетах, авторы приходят к выводам о превосходстве представлений, полученных с помощью LLM, над ID-based подходом. Также утверждают, что с увеличением размера модели увеличивается репрезентативность пользовательских интересов.<br><br>Ключевая идея — итеративное построение эмбеддингов пользователей и айтемов по графу взаимодействий с использованием нелинейностей и представлений LLM — в статье этот метод называется AlphaRec. Для обучения моделей авторы предлагают использовать случайно сэмплированные негативы из числа тех айтемов, с которыми пользователи не взаимодействовали. На рассмотренных датасетах AlphaRec обходит существующие алгоритмы как по качеству, так и по необходимым вычислительным мощностям. Ещё одно преимущество этого фреймворка — возможность предоставить готовые эмбеддинги для инициализации другими алгоритмами ранжирования.<br><br>В конце статьи авторы рассматривают применение пользовательского интента (например, запрос с описанием фильма, который пользователь хотел бы потенциально посмотреть) для улучшения качества рекомендаций. Использование AlphaRec в этом случае позволяет получить результаты, кратно превосходящие другие методы. Однако датасет для такого исследования был сгенерирован синтетически с помощью асессоров и не защищен от ликов — то есть, скорее всего, он не означает, что в случае использования чат-бота или поискового запроса предложенный алгоритм будет настолько же хорош.<br><br>@RecSysChannel<br>Обзор подготовила <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Маргарита Мишустина<br><br>#YaICLR<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/104_480.webp" srcset="../../assets/media/thumbs/104_480.webp 480w, ../../assets/media/104.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="104" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>1 902 просмотров · 13 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/104" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./104.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./105.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./103.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 104, "media": [{"kind": "photo", "path": "../../assets/media/104.jpg", "thumb": "../../assets/media/thumbs/104_480.webp", "size": 199731, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

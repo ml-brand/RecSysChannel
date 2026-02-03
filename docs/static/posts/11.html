@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #11</title>
+  <meta name="description" content=" Улучшаем раннюю стадию ранжирования рекламы  Сегодня —  статья  о ранжировании рекламы. Как и в других рекомендательных системах, в нём 3 стадии:  • Retrieval —  отбор объявлений из баз, необязательн" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/11.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #11" />
+  <meta property="og:description" content=" Улучшаем раннюю стадию ранжирования рекламы  Сегодня —  статья  о ранжировании рекламы. Как и в других рекомендательных системах, в нём 3 стадии:  • Retrieval —  отбор объявлений из баз, необязательн" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/11_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2024-06-13T12:28:48+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/11_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-4.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-4.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=11" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="11">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2024-06-13T12:28:48+00:00">2024-06-13 12:28 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Улучшаем раннюю стадию ранжирования рекламы<br></strong>Сегодня — <a href="https://arxiv.org/abs/2307.11096" rel="nofollow noopener noreferrer">статья</a> о ранжировании рекламы. Как и в других рекомендательных системах, в нём 3 стадии:<br><br>• Retrieval —  отбор объявлений из баз, необязательно с помощью ML (~миллионы объявлений).<br>• Ранняя стадия ранжирования (~тысячи объявлений).<br>• Финальное ранжирование (~сотни объявлений).<br><br>Value считают на обоих этапах ранжирования, а итоговую оценку получают в финале. Учитывают:<br>• ставку рекламодателя;<br>• кликовые/конверсионные прогнозы;<br>• качество рекламы, оно же фидбек. Например, клик по крестику говорит, что объявление нерелевантно.<br><br><strong>Проблемы ранней стадии ранжирования<br><br></strong>Частый кейс — есть баннер, который получил бы высокую оценку, попал к пользователю и принёс конверсию, но первая модель его отсеяла. Виноваты ограничения по железу — лёгкая модель всегда хуже финальной. Отсюда же неконсистентность на уровне критериев оценки.<br><br>Selection bias возникает из-за несовпадения тренировочных и реальных данных. В обучение идут баннеры с показами, а на тесте модель впервые видит свежие. Из-за этого показанные ранее баннеры имеют несправедливое преимущество.<br><br><strong>Решение<br><br></strong>Фреймворк с мультитаргет-архитектурой. В нём есть shared-часть — она выдаёт эмбеддинги, которые идут в 3 головы:<br>• Первая предсказывает CTR.<br>• Во второй происходит дистилляция — главная фишка статьи. Модель с нижних стадий обучают на разметке моделей с финальной стадии ранжирования<br>• Третья — Consolidated Quality Score — учится на целевые действия кроме кликов: результаты опросов, долгие конверсии и др. Для каждого баннера считается их вероятность, а таргет берётся из финальной стадии.<br><br>Финальная модель обучается на сумму loss’ов — важно аккуратно подбирать веса, чтобы ничего не просело.<br><br>Мультитаргетная архитектура позволяет экномить ресурсы и не сильно терять в качестве. Проблему selection bias решают, добавляя в датасет негативы.<br><br>Оценивают симулятором — он считает вероятный топ в оффлайне. Так получают golden-сет, с которым сравнивают результаты прода.<br><br>@RecSysChannel<br>Разбор подготовила <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Маргарита Мишустина<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/11_480.webp" srcset="../../assets/media/thumbs/11_480.webp 480w, ../../assets/media/11.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="11" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>583 просмотров · 5 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/11" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-4.html">К списку постов</a> · <a href="./11.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./12.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./9.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 11, "media": [{"kind": "photo", "path": "../../assets/media/11.jpg", "thumb": "../../assets/media/thumbs/11_480.webp", "size": 76022, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>

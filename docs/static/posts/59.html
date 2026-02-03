@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #59</title>
+  <meta name="description" content=" Разбор тренда: графовые нейросети в индустрии   Начинаем год с взгляда в будущее! Некоторое время назад Кирилл Хрыльченко написал на Хабре  пост о главных трендах в рексис . Практически все эти тренд" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/59.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #59" />
+  <meta property="og:description" content=" Разбор тренда: графовые нейросети в индустрии   Начинаем год с взгляда в будущее! Некоторое время назад Кирилл Хрыльченко написал на Хабре  пост о главных трендах в рексис . Практически все эти тренд" />
+  
+  <meta property="article:published_time" content="2025-01-16T08:02:40+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../page-3.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=59" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="59">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2025-01-16T08:02:40+00:00">2025-01-16 08:02 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Разбор тренда: графовые нейросети в индустрии</strong><br><br>Начинаем год с взгляда в будущее! Некоторое время назад Кирилл Хрыльченко написал на Хабре <a href="https://habr.com/ru/companies/yandex/articles/857068/" rel="nofollow noopener noreferrer">пост о главных трендах в рексис</a>. Практически все эти тренды будут актуальны и в 2025-м — в науке и индустрии ещё много чего можно сделать в этих направлениях. Сегодня разберём подробнее один из трендов, который точно не потеряет актуальности в мире рекомендательных систем, — графовые нейросети. Посмотрим, какие подходы существуют и с какими интересными статьями стоит ознакомиться, чтобы лучше разобраться в теме.<br><br><strong>Классификация подходов:</strong><br><br>1. End-to-end — обучаем графовую нейросеть вместе с последующей моделью. <br>2. Frozen — переиспользуем уже выученные графовые представления в замороженном виде:<br>    ◦ трансдуктивные — не обобщаемся на новых юзеров или айтемы;<br>    ◦ индуктивные — можем получать представления для новых юзеров или айтемов; <br>    ◦ промежуточные подходы — для юзеров получить представления можем, а для айтемов — нет.<br><br><strong>End-to-end</strong><br><br>Etsy — (2023) <a href="https://arxiv.org/abs/2306.04833" rel="nofollow noopener noreferrer">Unified Embedding Based Personalized Retrieval in Etsy Search</a>. Особенности статьи: retrieval для поиска, графовое представление как дополнительная фича документа. SearchQuery-Product граф, семплирование соседей и усреднение в качестве агрегации.<br><br>Taobao — (2023) <a href="https://arxiv.org/abs/2307.04322" rel="nofollow noopener noreferrer">Graph Contrastive Learning with Multi-Objective for Personalized Product Retrieval in Taobao Search</a>. Аналогичное предыдущей статье применение подхода, item-item граф, attention в качестве агрегации.<br><br>Amazon — (2021) <a href="https://arxiv.org/abs/2105.02978" rel="nofollow noopener noreferrer">Graph-based Multilingual Product Retrieval in E-Commerce Search</a>. Идея, похожая на работу от Etsy. Авторы делают multilingual модель.<br><br>Alibaba Group — (2022) <a href="https://arxiv.org/abs/2208.13007" rel="nofollow noopener noreferrer">Multi-level Contrastive Learning Framework for Sequential Recommendation</a>. На обучении графовое представление пользователя сближается с тем, что получено из sequential модели. На инференсе графовая часть откидывается.<br><br><strong>Трансдуктивные</strong><br><br>X/Twitter — (2022) TwHIN. <a href="https://arxiv.org/abs/2202.05387" rel="nofollow noopener noreferrer">Embedding the Twitter Heterogeneous Information Network for Personalized Recommendation</a>. Обучаемые ID для каждой сущности, TransE на BCE (link-prediction). <br><br><strong>Промежуточные</strong><br><br>Amazon — (2023) <a href="https://arxiv.org/abs/2306.06302" rel="nofollow noopener noreferrer">Multi-Task Knowledge Enhancement for Zero-Shot and Multi-Domain Recommendation in an AI Assistant Application</a>. Авторы создают кросс-доменный граф: музыка, видео, книги. Юзеры кодируются индуктивно, а айтемы = обучаемые ID.<br><br><strong>Индуктивные</strong><br><br>Pinterest — (2022) <a href="https://arxiv.org/abs/2205.10666" rel="nofollow noopener noreferrer">MultiBiSage: A Web-Scale Recommendation System Using Multiple Bipartite Graphs at Pinterest</a>. Исследователи получают графовые представления для пинов, которые потом переиспользуют везде. Используют контент.<br><br>Spotify — (2021) <a href="https://research.atspotify.com/publications/multi-task-learning-of-graph-based-inductive-representations-of-music-content/" rel="nofollow noopener noreferrer">Multi-Task Learning Of Graph-Based Inductive Representations Of Music Content</a>. Мультитаск, BCE — пара вершин принадлежит одному плейлисту (link-prediction), либо пара вершин имеет один и тот же жанр, регрессия основана на близости по контенту.<br><br>Spotify — (2020) <a href="https://youtu.be/79MRwEB5AhA" rel="nofollow noopener noreferrer">Podcast Recommendations and Search Query using GNNs at Spotify. Graph Learning Workshop 2022</a>. Рассказ о собственных графовых сетках Spotify.<br><br>KuaiShou — (2023) <a href="https://arxiv.org/abs/2211.10624" rel="nofollow noopener noreferrer">A Unified Model for Video Understanding and Knowledge Embedding with Heterogeneous Knowledge Graph Dataset</a>. Авторы получают индуктивные представления для видео и тегов к ним.<br><br><strong>Основные выводы</strong><br><br>1. Используя графовые нейросети, многие авторы статей наблюдают улучшение метрик на long-tail айтемах. <br>2. Такие сетки удобно использовать для данных из разных доменов.<br>3. Также графовые нейросети используются как один из источников генерации кандидатов или фич в ранжировании.<br><br>@RecSysChannel<br>Обзор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Артем Матвеев</div>
+      <div class="actions">
+        <span>2 433 просмотров · 27 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/59" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./59.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./60.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./58.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 59, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-03T15:21:06Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 208, "updated": 0, "media_downloaded": 189}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
