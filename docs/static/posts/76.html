@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="../../metrika.js"></script>
 </head>
-<body data-index-href="../page-2.html">
+<body data-index-href="../page-3.html">
   <header class="header">
     <div class="container">
       <div class="title-grid single-title">
@@ -31,7 +31,7 @@
         </a>
         <div class="grid-main">
           <div class="title-head">
-            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
+            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
             <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
             <div class="hero-actions">
               <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
@@ -60,8 +60,8 @@
       </div>
       <div class="post-body"><strong>From Features to Transformers: Redefining Ranking for Scalable Impact</strong> <br><br>Сегодня разбираем <a href="https://arxiv.org/abs/2502.03417" rel="nofollow noopener noreferrer">статью</a> от Linkedin, в которой Фёдор Борисюк и команда делятся результатами внедрения HSTU-подобной модели. Публикация интересна тем, что объединяет ключевые тренды 2024 года: идею target-aware из HSTU и использование semantic IDs из TIGER.<br><br>В работе обозначено несколько целей:<br><br><strong>1) Избавиться от большого количества hand-crafted фичей</strong><br>Авторы хотят показать, что их небольшая модель с базовыми фичами может переиграть сложные подходы и дать высокие результаты в ранжировании.<br><br><strong>2) Использовать list-wise подходы вместо point-wise</strong><br>Исторически ранжирующие модели Linkedin использовали point-wise подход, то есть оценивали каждый айтем независимо от прочих. В статье утверждается, что вероятность клика на конкретный айтем зависит не только от него самого, но и от других совместно показанных айтемов. Из-за этого авторы отказываются от point-wise и переходят на list-wise ранжирование. Ещё эта мера помогла им избавиться от rule-based бизнес-логики в обработке выходов моделей.<br><br><strong>3) Scaling law в рекомендациях</strong><br>Если в NLP и CV scaling law продемонстрирован многократно, то в RecSys — лишь в единицах исследований. Авторы ссылаются на работы, которые показывают, что при правильном увеличении модели можно увидеть scaling law (<a href="https://arxiv.org/abs/2402.17152v1" rel="nofollow noopener noreferrer">HSTU</a>, <a href="https://arxiv.org/abs/2403.02545" rel="nofollow noopener noreferrer">Wukong</a>, <a href="https://arxiv.org/abs/2409.12740" rel="nofollow noopener noreferrer">HLLM</a>). Им самим удалось добиться этого, используя всего семь ключевых фичей, основанных на разных ID.<br><br>Решение, предложенное в статье, — модель под названием <strong>LinkedIn Generative Recommender (LiGR)</strong>, которая собирает воедино перечисленные доработки. <br><br>До LiGR LinkedIn использовали в проде для ранжирования две отдельные point-wise модели, которые предсказывали несколько типов взаимодействия: Click Tower — вероятность клика и длительного просмотра поста; Contributions Tower — лайки, комментарии и репосты. Все фичи проходили через fully-connected слои, выдавая на выходе вероятности событий.<br><br>В LiGR авторы полностью отходят от предыдущего подхода и используют sequential-архитектуру. На вход модели подаётся хронологическая история интеракций пользователя в виде последовательности токенов, где токен — агрегация представлений признаков айтема из истории пользователя. На выходе для каждого айтема модель выдаёт вектор, где каждая компонента отвечает за отдельный тип взаимодействия.<br><br>Вдохновляясь HSTU, авторы используют target-aware постановку (в истории пользователя явно представлены не только айтемы, но соответствующие им действия совершенные пользователем) и gated attention — измененный механизм внимания с использованием гейтинга.<br><br>Также авторы предлагают использовать дополнительные attention блоки, работающие только в рамках сессий. Идея, заимствованная из SNG (<a href="https://arxiv.org/abs/1811.00855" rel="nofollow noopener noreferrer">Session-based Neural Graphs</a>), заключается в том, что внутри одной сессии все айтемы могут учитывать друг друга для уточнения финальных скоров.<br><br><strong>Эксперименты и эффекты </strong><br><br>Один из главных результатов — исследователям удалось показать, что scaling law действительно работает. Они попробовали масштабировать практически все аспекты: флопсы, размеры эмбеддингов, размеры трансформера. В сравнении с HSTU их подход показал лучшее качество.<br><br>Ещё одно наблюдение — простое увеличение длины sequence length при фиксировании других параметров дало ощутимый рост метрик. <br><br>Один из самых заметных эффектов от внедрения модели — рост Daily Active Users (DAU) на 0,27%.<br><br>В качестве итога можно сказать, что у авторов получилось полностью отказаться rule-based подхода, основанного на устаревших принципах. А наибольший прирост производительности был получен за счёт скейлинга. <br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Владимир Байкалов<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/76_480.webp" srcset="../../assets/media/thumbs/76_480.webp 480w, ../../assets/media/76.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="76" data-image-index="0" /></div></div>
       <div class="actions">
-        <span>2 700 просмотров · 30 реакций</span>
-        <span class="action-links"><a href="https://t.me/RecSysChannel/76" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./76.html">Ссылка на этот пост</a></span>
+        <span>2 701 просмотров · 30 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/76" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./76.html">Ссылка на этот пост</a></span>
       </div>
     </article>
 
@@ -87,7 +87,7 @@
 
   <script>
     window.__STATIC_POSTS = [{"id": 76, "media": [{"kind": "photo", "path": "../../assets/media/76.jpg", "thumb": "../../assets/media/thumbs/76_480.webp", "size": 73090, "mime": "image/jpeg", "name": null}]}];
-    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-04T08:06:57Z", "posts_count": 104, "last_seen_message_id": 217, "stats": {"new": 104, "updated": 2, "media_downloaded": 104}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-04T13:50:23Z", "posts_count": 105, "last_seen_message_id": 218, "stats": {"new": 105, "updated": 104, "media_downloaded": 105}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
   </script>
   <script src="../../common.js"></script>
   <script src="../../static.js"></script>
