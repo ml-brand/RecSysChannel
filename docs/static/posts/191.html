@@ -59,7 +59,7 @@
       </div>
       <div class="post-body"><strong>OnePiece: Bringing Context Engineering and Reasoning to Industrial Cascade Ranking System [2/2]</strong><br><br>Продолжаем разбор <a href="https://arxiv.org/abs/2509.18091" rel="nofollow noopener noreferrer">техрепорта</a> от Shopee. Так чем же интересен reasoning? <br><br>Авторы берут hidden state из последнего блока backbone, подают на вход в декодер с блочно-каузальным attention. По словам авторов, блоки позволяют учитывать больше информации о каждом токене. <br><br>Блоки в итоге учатся на разные таски: <br>— Retrieval: binary-cross-entropy loss (будет клик или не будет, добавят товар в корзину или нет, купят ли) и bidirectional contrastive learning (симметричный User to Item и Item to User).<br>— Ranking: вместо BCL используют set contrastive learning на успешных случаях, чтобы расширить границы положительных и отрицательных исходов. <br><br>Для тренировки моделей авторы воспроизводят ежедневное онлайн-дообучение, которое ждёт систему в проде. Данные упорядочены между собой по дням, но внутри них семплы пошаффлены. Результат за каждый день сохраняется и оценивается по итогам следующего. Период данных для обучения — месяц.<br><br>Сделав вход модели более информативным, а также добавив многошаговый reasoning, авторы улучшили результаты работы модели. Внедрение нового фреймворка в основной сценарий персонализированного поиска помогло добиться +2% GMV/UU и +2,90% дохода от рекламы.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Виктор Януш</div>
       <div class="actions">
-        <span>1 847 просмотров · 17 реакций</span>
+        <span>1 848 просмотров · 17 реакций</span>
         <span class="action-links"><a href="https://t.me/RecSysChannel/191" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./191.html">Ссылка на этот пост</a></span>
       </div>
     </article>
@@ -86,7 +86,7 @@
 
   <script>
     window.__STATIC_POSTS = [{"id": 191, "media": []}];
-    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-05T20:03:54Z", "posts_count": 105, "last_seen_message_id": 218, "stats": {"new": 104, "updated": 3, "media_downloaded": 104}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-05T21:05:41Z", "posts_count": 105, "last_seen_message_id": 218, "stats": {"new": 104, "updated": 14, "media_downloaded": 104}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
   </script>
   <script src="../../common.js"></script>
   <script src="../../static.js"></script>
