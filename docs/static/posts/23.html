@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="../../metrika.js"></script>
 </head>
-<body data-index-href="../page-3.html">
+<body data-index-href="../page-4.html">
   <header class="header">
     <div class="container">
       <div class="title-grid single-title">
@@ -31,7 +31,7 @@
         </a>
         <div class="grid-main">
           <div class="title-head">
-            <a class="back-link" href="../page-3.html">← Ко всем постам</a>
+            <a class="back-link" href="../page-4.html">← Ко всем постам</a>
             <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
             <div class="hero-actions">
               <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
@@ -61,7 +61,7 @@
       <div class="post-body"><strong>LiNR: Model Based Neural Retrieval on GPUs at LinkedIn</strong><br><br>В свежей <a href="https://arxiv.org/abs/2407.13218" rel="nofollow noopener noreferrer">статье</a> от LinkedIn рассказывается о LiNR, первом индустриальном алгоритме генерации кандидатов, работающем на GPU. LiNR может поддерживать индексы, включающие миллиарды потенциальных кандидатов. Авторы рассказали, как они разрабатывали свой обучаемый дифференцируемый индекс и с какими трудностями им пришлось столкнуться. <br><br>В LiNR построение индекса рассматривается как процесс обучения, из-за чего и представления объектов, и веса, с помощью которых происходит формирование выдачи, интегрируются в одну модель. Отличительным аспектом статьи является использование честного KNN для формирования выдачи вместо широко распространенного ANN (Approximate Nearest Neighbor). В работе также описывается способ интегрирования фильтраций, основанных на логических правилах, в стадию скоринга объектов индекса, что позволяет повысить качество финальной выдачи. <br><br>В статье авторы предлагают три версии алгоритма для генерации кандидатов:<br>— <strong>Скоринг всех объектов с последующей фильтрацией</strong>. Первое предложенное решение, которое может работать неоптимально, особенно в случаях с большим процентом отфильтрованных объектов (low-pass-rate сценарии).<br>— <strong>Предварительная фильтрация объектов с последующим скорингом</strong>. Улучшенная версия первого подхода, которая решает его проблемы и увеличивает метрики качества выдачи.<br>— <strong>Дополнительное улучшение второго подхода с использованием квантизации</strong>. Предлагается использовать две стадии выбора кандидатов после фильтрации: первичный выбор подмножества объектов на основе квантизованных представлений и более гранулярная фильтрация оставшихся объектов для получения финальной выдачи.<br><br>Внедрение LiNR позволило увеличить количество ежедневных уникальных пользователей на <strong>3%</strong>. Об особенностях архитектуры модели, квантизации, инфраструктуре, экспериментах, результатах и других фишках можно подробнее прочитать в <a href="https://arxiv.org/pdf/2407.13218" rel="nofollow noopener noreferrer">самой статье</a>, а я хотел бы остановиться на главных тезисах, которые исследователи постулируют в работе: <br><br>— С оффлайн инференсом и обновлением модели вы теряете свежих кандидатов, а следовательно, и качество. Real-time обновление LiNR увеличило качество <strong>всего пайплайна</strong> на 6%.<br>— Предварительная фильтрация, в отличие от пост-фильтрации, которая может тратить слоты кандидатов на нерелевантные объекты, помогает повысить качество модели.<br>— По умолчанию TF или PyTorch не приспособлены для реализации retrieval-моделей, из-за чего такие решения будут довольно медленными без дополнительных оптимизаций.<br>— Имплементация собственного CUDA-ядра для второй и третьей версий модели позволила получить значительное преимущество в скорости (к сожалению, авторы не поделились кодом самого ядра).<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Владимир Байкалов<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/23_480.webp" srcset="../../assets/media/thumbs/23_480.webp 480w, ../../assets/media/23.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="23" data-image-index="0" /></div></div>
       <div class="actions">
         <span>2 177 просмотров · 23 реакций</span>
-        <span class="action-links"><a href="https://t.me/RecSysChannel/23" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-3.html">К списку постов</a> · <a href="./23.html">Ссылка на этот пост</a></span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/23" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-4.html">К списку постов</a> · <a href="./23.html">Ссылка на этот пост</a></span>
       </div>
     </article>
 
@@ -87,7 +87,7 @@
 
   <script>
     window.__STATIC_POSTS = [{"id": 23, "media": [{"kind": "photo", "path": "../../assets/media/23.jpg", "thumb": "../../assets/media/thumbs/23_480.webp", "size": 24221, "mime": "image/jpeg", "name": null}]}];
-    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-12T09:32:31Z", "posts_count": 105, "last_seen_message_id": 218, "stats": {"new": 104, "updated": 8, "media_downloaded": 104}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-12T10:29:05Z", "posts_count": 106, "last_seen_message_id": 222, "stats": {"new": 108, "updated": 27, "media_downloaded": 108}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
   </script>
   <script src="../../common.js"></script>
   <script src="../../static.js"></script>

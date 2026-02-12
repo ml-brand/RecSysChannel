@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="../../metrika.js"></script>
 </head>
-<body data-index-href="../index.html">
+<body data-index-href="../page-2.html">
   <header class="header">
     <div class="container">
       <div class="title-grid single-title">
@@ -31,7 +31,7 @@
         </a>
         <div class="grid-main">
           <div class="title-head">
-            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="back-link" href="../page-2.html">← Ко всем постам</a>
             <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
             <div class="hero-actions">
               <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
@@ -61,7 +61,7 @@
       <div class="post-body"><strong>PinFM: Foundation Model for User Activity Sequences at a Billion-scale Visual Discovery Platform [2/2]</strong><br><br>Продолжаем <a href="https://t.me/RecSysChannel/142" rel="nofollow noopener noreferrer">разбирать статью</a> от Pinterest. Авторы не делятся внутренними параметрами модели, не уточняют, какого размера декодер и как всё обучалось. Однако они приводят масштабы всей системы — 20 миллиардов параметров. Судя по всему, большая часть этих параметров — матрица эмбеддингов. То есть модель в итоге получилась небольшой.<br><br>Отмечают, что в качестве энкодера выбрали архитектуру GPT2 и не увидели улучшений от применения HSTU-энкодера. Обучающую последовательность сформировали из 16 тысяч пользовательских взаимодействий, нарезав их на подпоследовательности длиной несколько сотен событий. Каждое событие кодируют обучаемыми эмбеддингами пина, поверхности и типа взаимодействия, итоговый токен события — сумма этих трёх эмбеддингов. Напоминает то, как формируются токены в <a href="https://t.me/RecSysChannel/133" rel="nofollow noopener noreferrer">Argus</a>: де-факто есть те же context, item и action, но в весьма ограниченном варианте.<br><br>В остальном архитектура вышла стандартной. Но вот решаемую задачу авторы определяют весьма интересно. В качестве таргетов берут только позитивные события (при этом последовательность формируется с включением негативов), делают это с помощью Sampled Softmax (почему-то без <a href="https://arxiv.org/abs/2507.09331" rel="nofollow noopener noreferrer">LogQ-коррекции</a>). В этом сетапе на стадии претрейна предсказывают: <br><br>– следующий позитивный токен;<br>– следующие позитивные токены в некотором временном окне;<br>– позитивные события, но во временном окне downstream-ранжирующей модели.<br><br>Получившийся лосс суммируют.<br><br>На файнтюне используют ещё несколько интересных трюков: выравнивают предсказания файнтюна и ранжирующей модели, добавляют дополнительный сигнал (контентно-коллаборативные графовые эмбеддинги) и обучаемые токены перед кандидатами, а также техники для решения проблемы холодного старта.<br><br>Команда Pinterest в очередной раз демонстрирует крутые инфраструктурные решения для жизнеспособность всей системы. В частности, эффективная дедупликация последовательности увеличила на 600% пропускную способность модели по сравнению с FlashAttention-2. Для оптимизации гигантской таблицы эмбеддингов применили агрессивную int4-квантизацию практически без потери качества.<br><br>В результате получилась сильная модель, хорошо агрегирующая знание о пользователях. Это отражается в результатах A/B-тестирования: на рекомендательной ленте на главной удалось добиться роста числа сохранений пинов на 2,6%, а для свежих пинов — на 5,7%.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Руслан Кулиев<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/143_480.webp" srcset="../../assets/media/thumbs/143_480.webp 480w, ../../assets/media/143.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="143" data-image-index="0" /></div></div>
       <div class="actions">
         <span>1 737 просмотров · 25 реакций</span>
-        <span class="action-links"><a href="https://t.me/RecSysChannel/143" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./143.html">Ссылка на этот пост</a></span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/143" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../page-2.html">К списку постов</a> · <a href="./143.html">Ссылка на этот пост</a></span>
       </div>
     </article>
 
@@ -87,7 +87,7 @@
 
   <script>
     window.__STATIC_POSTS = [{"id": 143, "media": [{"kind": "photo", "path": "../../assets/media/143.jpg", "thumb": "../../assets/media/thumbs/143_480.webp", "size": 54197, "mime": "image/jpeg", "name": null}]}];
-    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-12T09:32:31Z", "posts_count": 105, "last_seen_message_id": 218, "stats": {"new": 104, "updated": 8, "media_downloaded": 104}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-02-12T10:29:05Z", "posts_count": 106, "last_seen_message_id": 222, "stats": {"new": 108, "updated": 27, "media_downloaded": 108}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
   </script>
   <script src="../../common.js"></script>
   <script src="../../static.js"></script>
