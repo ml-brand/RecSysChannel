@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #237</title>
+  <meta name="description" content=" Kunlun: Establishing Scaling Laws for Massive‑Scale Recommendation Systems [2/2]   Продолжаем разбор  статьи Kunlun  — переходим к архитектуре и масштабированию.  Авторы высокоуровнево выделяют в мод" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/237.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #237" />
+  <meta property="og:description" content=" Kunlun: Establishing Scaling Laws for Massive‑Scale Recommendation Systems [2/2]   Продолжаем разбор  статьи Kunlun  — переходим к архитектуре и масштабированию.  Авторы высокоуровнево выделяют в мод" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/237_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-05-04T09:35:46+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/237_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=237" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="237">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-05-04T09:35:46+00:00">2026-05-04 09:35 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Kunlun: Establishing Scaling Laws for Massive‑Scale Recommendation Systems [2/2]<br></strong><br>Продолжаем разбор <a href="https://arxiv.org/abs/2602.10016" rel="nofollow noopener noreferrer">статьи Kunlun</a> — переходим к архитектуре и масштабированию.<br><br>Авторы высокоуровнево выделяют в модели два блока:<br><br>- Kunlun Transformer Block — отвечает за обработку истории с учётом контекста. <br>- Kunlun Interaction Block — отвечает за обмен информацией между последовательными и непоследовательными признаками. <br><br>Рассмотрим подробнее один слой модели, чтобы понять, как достигается взаимодействие между фичами различной природы.<br><br>1) Из контекстных фичей получаются матрицы K и V, которые потом используют для извлечения информации из последовательности благодаря cross-attention. Авторы рассматривают это как обогащение истории пользователя контекстом/персонализацией. Ребята значимо поработали над low-level-оптимизациями, перенеся их из FlashAttention, благодаря чему ускорили этот блок в шесть раз по сравнению с Interformer.<br><br>2) GDPA — Generalized Dot Product Attention. Последовательность событий преобразуют в Q, с которой «смотрят» на полученные K, V с предыдущего шага.<br><br>3) Hierarchical Seed Pooling (HSP) — замена традиционному PMA (Pooling by Multihead Attention). Смысл — донести информацию из истории действий пользователя для взаимодействия с контекстными фичами. Тут тоже применяют трюк, чтоб захватить побольше информации, не усложнив значимо компьют. <br><br>4) Multi-expert Wukong — для захвата взаимодействий (в том числе и высоких порядков) между контекстными фичами и историей пользователя<br><br>5) Стандартный блок self-attention для последовательности, уже обогащённой контекстом.<br><br>6) После заключительного слоя для каждой задачи с его помощью вычисляется MLP-шапка (Multi-Layer Perceptron).<br><br>В целом ощущение, что Kunlun — это доведённый до ума Interformer, в котором неэффективные блоки заменили на более GPU-friendly, а также применили трюки из LLM для оптимизации ресурсов: sliding-window attention, чередование блоков с attention по последовательности с блоками взаимодействия/суммаризации по контекстным фичам (computation skip), mixture of experts (необычно, что экспертом выступают wukong-блоки). <br><br>Также авторы немного упоминают event-level personalization. У пользователя могут быть последовательности из разных событий, и вес/важность событий разных типов (барабанная дробь!) разная. Поэтому — якобы — для разных последовательностей можно управлять гиперпараметрами:<br><br>d — размерность эмбеддингов;<br>n_heads — количество голов в multi-head attention;<br>n_tokens — количество токенов, участвующих в взаимодействии с контекстными фичами;<br>L — количество слоёв;<br>w — размер окна в sliding window self-attention.<br><br>Относительно остальных оптимизаций этот пункт выглядит наименее понятным и объяснённым. С одной стороны, идея довольно простая. С другой — непонятно, как поддерживают разные гиперпараметры для разных событий, поскольку в архитектуре есть завязки на единый размер эмбеддингов и практически все гиперпараметры — ключевые (например, количество слоёв модели). Разве что это фактически разные модели — по одной для каждой последовательности (для кликов, для показов, для конверсий).<br><br>Что касается цифр, модель масштабируется примерно в два раза эффективнее бейзлайнов (прирост метрик на одинаковый прирост компьюта стал в два раза выше), использование GPU (MFU) на B200 выросло с 17% до ~37%, а в Meta Ads это дало прирост бизнес-метрик на +1,2%. <br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Артём Ваншулин<br>___<br><em>Компания Meta признана экстремистской; её деятельность в России запрещена.</em><div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/237_480.webp" srcset="../../assets/media/thumbs/237_480.webp 480w, ../../assets/media/237.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="0" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/238_480.webp" srcset="../../assets/media/thumbs/238_480.webp 480w, ../../assets/media/238.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="1" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/239_480.webp" srcset="../../assets/media/thumbs/239_480.webp 480w, ../../assets/media/239.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="2" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/240_480.webp" srcset="../../assets/media/thumbs/240_480.webp 480w, ../../assets/media/240.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="3" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/241_480.webp" srcset="../../assets/media/thumbs/241_480.webp 480w, ../../assets/media/241.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="4" /><img class="media-img" loading="lazy" src="../../assets/media/thumbs/242_480.webp" srcset="../../assets/media/thumbs/242_480.webp 480w, ../../assets/media/242.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="237" data-image-index="5" /></div></div>
+      <div class="actions">
+        <span>283 просмотров · 13 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/237" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./237.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./236.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 237, "media": [{"kind": "photo", "path": "../../assets/media/237.jpg", "thumb": "../../assets/media/thumbs/237_480.webp", "size": 54172, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/238.jpg", "thumb": "../../assets/media/thumbs/238_480.webp", "size": 73417, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/239.jpg", "thumb": "../../assets/media/thumbs/239_480.webp", "size": 73192, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/240.jpg", "thumb": "../../assets/media/thumbs/240_480.webp", "size": 71638, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/241.jpg", "thumb": "../../assets/media/thumbs/241_480.webp", "size": 71565, "mime": "image/jpeg", "name": null}, {"kind": "photo", "path": "../../assets/media/242.jpg", "thumb": "../../assets/media/thumbs/242_480.webp", "size": 57914, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-05-04T10:36:25Z", "posts_count": 119, "last_seen_message_id": 242, "stats": {"new": 114, "updated": 21, "media_downloaded": 114}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
