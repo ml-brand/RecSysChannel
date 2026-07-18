@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #254</title>
+  <meta name="description" content=" Тренды рекомендательных систем на ICML 2026 [1/2]   В этом году о рекомендациях много говорили на тематическом воркшопе  The Generative Turn in Search and Recommendation . Сегодня разберём доклады от" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/254.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #254" />
+  <meta property="og:description" content=" Тренды рекомендательных систем на ICML 2026 [1/2]   В этом году о рекомендациях много говорили на тематическом воркшопе  The Generative Turn in Search and Recommendation . Сегодня разберём доклады от" />
+  
+  <meta property="article:published_time" content="2026-07-18T07:10:00+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=254" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="254">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-07-18T07:10:00+00:00">2026-07-18 07:10 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>Тренды рекомендательных систем на ICML 2026 [1/2]</strong><br><br>В этом году о рекомендациях много говорили на тематическом воркшопе <a href="https://icml.cc/virtual/2026/75709" rel="nofollow noopener noreferrer">The Generative Turn in Search and Recommendation</a>. Сегодня разберём доклады оттуда.<br><br><strong>Meta GR2: Advancing LLM-Based Recommendation System through Reasoning</strong><br><br>Unified RecSys with RL end-to-end optimization. Делают модель, переранжирующую список кандидатов — что отличает их от чисто генеративных рекомендаций. Механизм примерно следующий:<br><br><strong>Шаг 0.</strong> Большая текстовая reasoning-модель получает на вход контекст и список кандидатов. А на выходе возвращает итоговый порядок — качественно и дорого в плане инференса. Далее стоимость будет падать при относительном сохранении качества.<br><br><strong>Шаг 1.</strong> Mid-train: обучение студента, где товары обозначены Semantic ID — спецтокенами, обозначающими подсклеенные айтемы, полученные через RQ-VAE. Как делать это хорошо — отдельный разговор. Используют и рекомендательные задачи (следующий товар, суммаризация интересов пользователя и т.п.), и некие general-domain data.<br><br><strong>Шаг 2.</strong> RL post-training, on-policy distillation, etc. Разных техник описано много. Cодержательно, что авторы заявляют -3% качества к проду у zero-shot, +5% у SFT, +18% у итогового решения. То есть, основной профит прячется здесь.<br><br><strong>Шаг 3. </strong>Дистилляция reasoning в low-think/no-think — всё ещё экономят токены.<br><br><strong>Шаг 4.</strong> Инфраструктурные улучшения — собирают X&#x27;ы ускорения за счёт плясок вокруг CUDA graph pre-fill, KV cache, prompt compression. Полный список не влез даже в исходную презентацию.<br><br>В итоге со всеми ухищрениями получают маленькие — 0.6B и 1.7B — модельки с вполне катабельными таймингами. Имхо, приятное свойство доклада — опциональность шагов. Это хороший план действий.<br><br><strong>Generative Catalog Search</strong>. <strong>Building Shopify’s Generative Product Search</strong><br><br>Относительно обычный генеративный подход — SID-LLM. Но интересным показалось не это, а их бейзлайн — прошлый прод. Там указан Generative Query Rewriting + Hybrid Retrieval (lexical matching + embedding-based retrieval). <br><br>Далее утверждается, что чисто генеративная часть ухудшала метрики на 10%, а будучи замешанной в параллель с их прошлым способом поиска товаров, наоборот, подрастила на 2%. <br><br>Связано ли это с тем, что бейзлайн был сильнее, или с тем, что последний шаг на Model Training Stages — SFT, непонятно. Впрочем, внедрить Generative Query Rewriting явно проще, чем полноценные генеративные рекомендации, раз уж он есть у Shopify — значит, в нём есть толк.<br><br><strong>Ground Truth for the Generative Turn: Human Judgment at Scale for Search and Recommendation<br></strong><br>Учитывая, в скольких разных местах используются разные вариации на тему LLM-as-a-judge, несложно догадаться, что в докладе замешана Toloka. <br><br>Несколько обрывочно говорят о том, почему люди всё-таки нужны, и что одной только информации о кликах-покупках не хватит. Еë недостаточно, например, для оценки всяких рассуждений и рефразов. Рассказывают о своих экспертах: нашли 5000 оценщиков с подтверждёнными покупками на целевом US/Canada-рынке, отсеяли 90% по качеству, через 14 недель устаканились на уровне в 315 человек.<br><br>Далее заметили, что в большинстве категорий люди оценивают покупки из своей категории заметно строже, что должно растить качество разметки. При этом переучивать и сводить строгих/слабых разметчиков у авторов не получилось, разброс строгости остаётся прежним на протяжении недель.<br><br>Выделяют пять слоёв контроля разметки:<br><br>1. Контрольные задания — выкинуть 90% самых слабых.<br>2. Технические проверки — всё, что верифицируемо.<br>3. LLM-проверки или LLM-критик, который подсвечивает ключевое, но не принимает решения за человека.<br>4. Кворум — ловит шум отдельных разметчиков.<br>5. Проверка заказчиком.<br><br>В целом, из своего опыта замечу, что заказывать людям хорошую разметку <strong>очень</strong> дорого, а плохая разметка в целом уже не нужна.<br><br>#YaICML2026<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Кирилл Шевкунов<br><em>___<br>Компания Meta признана экстремистской; её деятельность в России запрещена.</em></div>
+      <div class="actions">
+        <span>262 просмотров · 13 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/254" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./254.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link" href="./255.html" style="visibility:visible">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./251.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 254, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-07-18T08:27:24Z", "posts_count": 130, "last_seen_message_id": 255, "stats": {"new": 117, "updated": 30, "media_downloaded": 115}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
