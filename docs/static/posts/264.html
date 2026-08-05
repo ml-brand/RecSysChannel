@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #264</title>
+  <meta name="description" content=" State of Routing in Model Serving at Netflix    В наши дни большинство рекомендательных сервисов используют ML-модели: от линейных и градиентного бустинга до развесистых нейросетей. Если в продукте п" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/264.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #264" />
+  <meta property="og:description" content=" State of Routing in Model Serving at Netflix    В наши дни большинство рекомендательных сервисов используют ML-модели: от линейных и градиентного бустинга до развесистых нейросетей. Если в продукте п" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/264_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-08-05T09:10:30+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/264_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=264" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="264">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-08-05T09:10:30+00:00">2026-08-05 09:10 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>State of Routing in Model Serving at Netflix </strong><br><br>В наши дни большинство рекомендательных сервисов используют ML-модели: от линейных и градиентного бустинга до развесистых нейросетей. Если в продукте появляется первая поверхность для подключения продвинутых рекомендательных технологий, то самое простое — внедрить нужную модель в бэкенд сервиса.<br><br>Однако после запуска всё только начинается. Нужно как-то обновлять модели, тестировать новые архитектуры, подключать новые рекомендательные сценарии и при этом не упереться в ограничения железа.<br><br>Сегодня разбираем <a href="https://medium.com/netflix-techblog/state-of-routing-in-model-serving-16e22fe18741" rel="nofollow noopener noreferrer">пост</a>, в котором описана инфраструктура для инференса ML-моделей в Netflix. Посмотрим, как они решают эти вопросы в рамках своей платформы Switchboard.<br><br><strong>Ключевые принципы платформы:</strong><br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>Сотни типов моделей и десятки поверхностей для их использования (персонализированные рекомендации фильмов, антифрод).<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>Суммарно ~1M RPS.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>В API есть абстракция Objective — идентификатор поверхности, для которой нужно посчитать ML-модель.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>В продуктовом коде один раз пишется интеграция с платформой, а в запросе передаётся информация о текущем Objective и текущем «контексте» (например, UserId, CountryId, DeviceId).<br><br><em>В Netflix используют более широкое понятие serving: кроме самого инференса модели, оно включает получение данных из внешних сервисов по идентификаторам из «контекста», расчёт фичей поверх входных данных, которые идут на вход в инференс, запуск модели и пост-обработку результатов.</em><br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>Продуктовый код «не знает», что у ML-моделей бывает версионирование, изменение архитектуры и постоянные A/B-эксперименты. Не знает, какие данные реально будут использованы при вычислении.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>ML-инженеры проводят эксперименты через Switchboard и могут с помощью динамических конфигов выбирать, какие модели будут обслуживать разные Objective.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>Инженеры Switchboard имеют контракты по SLA для нужных Objective и скрывают шардирование ML-моделей по различным кластерам, переливание трафика между моделями, A/B-эксперименты и миграции.<br><br><strong>Но есть три критичные проблемы:</strong><br><br>1. Switchboard становится единой точкой отказа — любой сбой на уровне входной прокси может задеть много ML-сценариев.<br><br>2. Появляется просадка по latency (~10–20 мс): дополнительный сетевой хоп, обработка входного payload&#x27;а (парсинг всего запроса для определения Objective и параметров, необходимых для управления трафиком) и нарезка A/B-экспериментов (тоже через внешний сервис).<br><br>3. «Шумные соседи»: клиенты могут неожиданно повысить нагрузку и неявно помешать запросам других клиентов.<br><br>Тогда в Netflix решают аккуратно избавиться от единой прокси в Switchboard. Но при этом важно не потерять классные свойства и абстракции, которые уже устоялись. Нужно, чтобы в клиенте появилась вся информация, которой владеет Switchboard, для определения, куда именно проксировать запрос.<br><br>Логику Switchboard делят на два компонента, которые скрыли в более умном клиенте на стороне продуктового кода:<br><br>1. Появляется отдельный легковесный сервис Lightbulb, в который клиенту надо отправить нужные «контекстные» данные и получить информацию, какую модель (routingKey) надо считать (по сути, нарезка трафика для необходимых кейсов).<br><br>2. Локально поднимается Envoy-прокси, куда независимо доставляют маппинги, на каких хостах какие ML-модели живут (routingKey → hosts).<br><br>Со стороны клиента остаётся пробросить routingKey в хедерах запроса в локальный Envoy, который согласно своим маппингам сделает запрос в нужный хост.<br><br>В итоге удалось избавиться от единой прокси и дополнительного сетевого хопа, а также от лишнего парсинга запроса на стороне Switchboard в пользу легковесных запросов в Lightbulb. И сохранить все продуктовые свойства платформы тоже удалось.<br><br>Ребята из Netflix репортят это как заслуженный успех, но часть деталей в статье не раскрыта и, скорее всего, требует отдельной проработки. Например, не сказано, что происходит в случае сбоев Lightbulb, который по сути стал новой единой точкой отказа и  как происходит расселение ML-моделей по хостам. Поэтому ждём от Netflix постов с новыми деталями.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Александр Михеев<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/264_480.webp" srcset="../../assets/media/thumbs/264_480.webp 480w, ../../assets/media/264.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="264" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>374 просмотров · 21 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/264" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./264.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./257.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 264, "media": [{"kind": "photo", "path": "../../assets/media/264.jpg", "thumb": "../../assets/media/thumbs/264_480.webp", "size": 69228, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-08-05T11:05:53Z", "posts_count": 133, "last_seen_message_id": 264, "stats": {"new": 122, "updated": 38, "media_downloaded": 122}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
