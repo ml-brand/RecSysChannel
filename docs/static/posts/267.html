@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #267</title>
+  <meta name="description" content=" InterFormer: Effective Heterogeneous Interaction Learning for CTR Prediction   Сегодня разбираем  статью InterFormer  об архитектуре под задачу CTR-prediction на гетерогенных данных: статичных призна" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/267.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #267" />
+  <meta property="og:description" content=" InterFormer: Effective Heterogeneous Interaction Learning for CTR Prediction   Сегодня разбираем  статью InterFormer  об архитектуре под задачу CTR-prediction на гетерогенных данных: статичных призна" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/267_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-08-14T08:01:57+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/267_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=267" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="267">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-08-14T08:01:57+00:00">2026-08-14 08:01 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>InterFormer: Effective Heterogeneous Interaction Learning for CTR Prediction</strong><br><br>Сегодня разбираем <a href="https://arxiv.org/abs/2411.09852" rel="nofollow noopener noreferrer">статью InterFormer</a> об архитектуре под задачу CTR-prediction на гетерогенных данных: статичных признаках пользователя/айтема и поведенческих последовательностях.<br><br>Авторы выделяют две проблемы существующих подходов:  <br><br>1. слабое взаимодействие между sequence- и non-sequence-фичами;  <br>2. агрессивное раннее сжатие последовательностей через pooling/summary, из-за чего теряется много информации.<br><br>Ключевой вклад — модуль InterFormer, который обрабатывает разные типы признаков отдельно, но на каждом слое обменивает между ними сжатые представления:<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji><strong>Interaction Arch</strong> — работает с non-sequence-фичами: user profile, item features, context. Ко входу добавляется summary последовательности, а в качестве бекбона можно использовать разные interaction-модули, например DCNv2 или DHEN.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji><strong>Sequence Arch</strong> — моделирует историю пользователя. Здесь sequence-эмбеддинги обновляются с учётом summary от non-sequence-фичей: сначала через personalized FFN, затем через multi-head attention.<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji><strong>Cross Arch</strong> — слой обмена между двумя ветками. Non-sequence-признаки сжимаются через gated selection, а sequence-информация суммаризуется через комбинацию CLS-, PMA- и recent-tokens. Эти summary передаются в соседнюю ветку на следующем слое.<br><br>Идея в том, чтобы не «схлопывать» все признаки в один вектор слишком рано, а делать «двунаправленный обмен»: sequence помогает non-sequence-части, а non-sequence-контекст помогает sequence-моделированию.<br><br>Для задачи CTR используется стандартная бинарная кросс-энтропия.<br><br>Из публичных: AmazonElectronics (3M), TaobaoAds (25M), KuaiVideo (137M). Также авторы используют крупный внутренний датасет Meta* на 70B семплов.<br><br>На публичных датасетах InterFormer даёт лучшие результаты среди бейзлайнов. На внутреннем датасете Meta авторы показывают +0,15% NE, +24% QPS, а в pilot launch +0,6% uplift по по основным продуктовым метрикам.<br><br>Ablation studies подтверждают, что:<br><br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>bidirectional interaction лучше однонаправленного обмена;<br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>selective aggregation лучше раннего pooling/MLP/MHA-сжатия;<br><tg-emoji emoji-id="5289629688224841126">🔴</tg-emoji>удаление PMA, recent tokens, gating, PFFN или MHA ухудшает качество.<br><br>Главное достоинство InterFormer — имплементация идеи с двунаправленным взаимодействием между статичными признаками и последовательностями без агрессивного раннего сжатия. Однако архитектура получилась довольно сложной и тяжелой для распараллеливания, приросты на публичных датасетах небольшие, а самые интересные production-результаты получены на закрытых данных Meta.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Никита Степанов<br><em>___</em><br><em>Компания Meta признана экстремистской; её деятельность в России запрещена.</em><div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/267_480.webp" srcset="../../assets/media/thumbs/267_480.webp 480w, ../../assets/media/267.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="267" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>232 просмотров · 18 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/267" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./267.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./265.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 267, "media": [{"kind": "photo", "path": "../../assets/media/267.jpg", "thumb": "../../assets/media/thumbs/267_480.webp", "size": 110008, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-08-14T08:48:31Z", "posts_count": 135, "last_seen_message_id": 267, "stats": {"new": 123, "updated": 23, "media_downloaded": 123}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
