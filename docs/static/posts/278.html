@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #278</title>
+  <meta name="description" content=" OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [1/3]   Сегодня приступаем к разбору  статьи  о том, как объединить генерацию кандидатов и ранжирован" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/278.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #278" />
+  <meta property="og:description" content=" OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [1/3]   Сегодня приступаем к разбору  статьи  о том, как объединить генерацию кандидатов и ранжирован" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/278_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-10-02T08:06:55+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/278_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=278" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="278">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-10-02T08:06:55+00:00">2026-10-02 08:06 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [1/3]<br></strong><br>Сегодня приступаем к разбору <a href="https://arxiv.org/abs/2603.02999" rel="nofollow noopener noreferrer">статьи</a> о том, как объединить генерацию кандидатов и ранжирование в одной модели. Начнём с проблематики и первого шага фреймворка OneRanker.<br><br>У современных рекомендательных подходов есть несколько минусов:<br><br>• <strong>Конфликт интереса пользователя и ценности для бизнеса.</strong> Генерация кандидатов опирается на клики и конверсии в истории пользователя, но системе важно учитывать и ценность объектов для бизнеса (например, для рекламы это eCPM). Если напрямую обучать генератор на обеих целях, они тянут общее представление в разные стороны: ухудшается и охват интересов, и отбор ценных объектов. Если же учитывать ценность только при ранжировании, лучшие по этому критерию кандидаты могут отсеяться раньше, чем начнётся ранжирование.<br><br>• <strong>Нечувствительность к кандидату (target-agnostic).</strong> При генерации представление пользователя одинаково для разных кандидатов. Поэтому модель не может выделить в истории именно те события, которые важны для оценки конкретного объекта.<br><br>• <strong>Разрыв между этапами. </strong>Отдельные генератор и ранжировщик могут повторно обрабатывать одну историю и учить разные представления.<br><br>Чтобы решить эти проблемы, авторы предлагают интегрировать генерацию в ранжирование на архитектурном уровне. Так появился фреймворк OneRanker. Он состоит из трёх шагов. <br><br><strong>Шаг 1. Основа генерации</strong><br><strong><br></strong>OneRanker опирается на предыдущую работу Tencent — GPR. История пользователя представлена последовательностью разнородных токенов: пользователя (U), контента (C), контекста (X) и объектов (I). Декодер на основе HSTU обрабатывает эту последовательность, а авторегрессионный механизм multi-token prediction (MTP) позволяет за один проход модели параллельно строить несколько полных цепочек семантических ID.<br><br>Что происходит на втором шаге фреймворка, подробно разберём в следующем посте.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Артём Ваншулин<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/278_480.webp" srcset="../../assets/media/thumbs/278_480.webp 480w, ../../assets/media/278.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="278" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>443 просмотров · 18 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/278" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./278.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./277.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 278, "media": [{"kind": "photo", "path": "../../assets/media/278.jpg", "thumb": "../../assets/media/thumbs/278_480.webp", "size": 73687, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-10-02T13:12:45Z", "posts_count": 142, "last_seen_message_id": 278, "stats": {"new": 126, "updated": 42, "media_downloaded": 126}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
