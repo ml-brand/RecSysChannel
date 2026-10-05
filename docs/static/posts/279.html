@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #279</title>
+  <meta name="description" content=" OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [2/3]   В прошлом  посте  приступили к разбору  статьи  о том, как в три шага объединить генерацию ка" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/279.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #279" />
+  <meta property="og:description" content=" OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [2/3]   В прошлом  посте  приступили к разбору  статьи  о том, как в три шага объединить генерацию ка" />
+  
+  <meta property="article:published_time" content="2026-10-05T09:05:37+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=279" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="279">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-10-05T09:05:37+00:00">2026-10-05 09:05 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>OneRanker: Unified Generation and Ranking with One Model in Industrial Advertising Recommendation [2/3]</strong><br><br>В прошлом <a href="https://t.me/RecSysChannel/278" rel="nofollow noopener noreferrer">посте</a> приступили к разбору <a href="https://arxiv.org/abs/2603.02999" rel="nofollow noopener noreferrer">статьи</a> о том, как в три шага объединить генерацию кандидатов и ранжирование в одной модели. Начали с проблематики и первого шага фреймворка, сегодня продолжим обсуждать второй шаг.<br><br><strong>Шаг 2. Учёт задач и кандидатов (multi task/target aware)</strong><br><br><strong>Разделение задач.</strong> Авторы вводят <em>task tokens</em>: <br><br>• по одному на каждую задачу, связанную с действиями пользователя (например, показ, клик или конверсия); <br>• отдельный для бизнес-ценности. <br><br>Они используют общее представление истории, но связаны с разными выходными головами. Токены упорядочены, например: показ → клик → конверсия → ценность. Каузальная маска позволяет поздним токенам учитывать ранние; ранние не видят поздние при attention.<br><br><strong>Fake Item Tokens.</strong> Авторы кластеризуют эмбеддинги объектов методом K-means и используют как токены центры кластеров (в статье используют 32 кластера). Это ориентиры в пространстве объектов, а не реальные кандидаты. Они дают генерации приближённую информацию о том, какие области этого пространства важны для пользователя в конкретной задаче.<br><br><strong>Взаимодействие токенов.</strong> Task tokens и Fake Item Tokens сначала обращаются к представлениям истории из шага 1 через cross-attention, затем взаимодействуют через self-attention. Маска разрешает обмен между токенами задач и центров, но не между разными центрами.<br><br><strong>Два канала представления.</strong> Для каждой задачи модель сохраняет семантический вектор её task token. Второй канал строится из пар этого токена с каждым Fake Item Token: пары проходят через MLP, а результаты суммируются. Получается сигнал о предпочтениях пользователя по областям пространства объектов <strong>в рамках данной задачи</strong>. Оба канала объединяют в представление пользователя.<br><br>Представление айтема строится симметрично: к его эмбеддингу добавляют косинусное сходство с каждым центром кластера. Скалярное произведение представлений пользователя и айтема даёт <strong>скор отбора</strong>. Он складывается из семантического соответствия задаче и соответствия по центрам: насколько айтем близок к областям, важным для пользователя.<br><br>Уточнённые представления шага 2 подаются в <strong>MTP</strong> для генерации кандидатов. На шаге 3 эти кандидаты получат <strong>отдельные скоры ранжировщика</strong>.<br><br>Шаг 3, обучение и результаты экспериментов обсудим в заключительном посте.<br><br>@RecSysChannel<br>Разбор подготовил <tg-emoji emoji-id="5224192932302565805">❣</tg-emoji> Артём Ваншулин</div>
+      <div class="actions">
+        <span>481 просмотров · 7 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/279" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./279.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./278.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 279, "media": []}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-10-05T16:24:22Z", "posts_count": 143, "last_seen_message_id": 279, "stats": {"new": 126, "updated": 57, "media_downloaded": 125}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
