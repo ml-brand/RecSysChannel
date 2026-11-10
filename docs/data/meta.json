@@ -2,13 +2,13 @@
   "title": "Рекомендательная [RecSys Channel]",
   "username": "RecSysChannel",
   "channel": "RecSysChannel",
-  "last_sync_utc": "2026-11-10T08:51:50Z",
+  "last_sync_utc": "2026-11-10T17:18:37Z",
   "posts_count": 146,
   "last_seen_message_id": 282,
   "stats": {
-    "new": 126,
-    "updated": 54,
-    "media_downloaded": 126
+    "new": 125,
+    "updated": 55,
+    "media_downloaded": 125
   },
   "avatar": "assets/channel_avatar.jpg",
   "meta_schema_version": "1.0.0",
