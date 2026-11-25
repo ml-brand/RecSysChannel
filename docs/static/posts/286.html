@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Рекомендательная [RecSys Channel] — пост #286</title>
+  <meta name="description" content=" TransX: Scaling Transformer-based Recommendation via Behavioral and Serving Stream Crossings [1/2]   Разбираем  статью  LinkedIn о TransX — архитектуре рекомендательной модели, которая позволяет рабо" />
+  <link rel="icon" href="../../favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32.png" />
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png" />
+
+  <link rel="canonical" href="https://ml-brand.github.io/RecSysChannel/static/posts/286.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Рекомендательная [RecSys Channel] — пост #286" />
+  <meta property="og:description" content=" TransX: Scaling Transformer-based Recommendation via Behavioral and Serving Stream Crossings [1/2]   Разбираем  статью  LinkedIn о TransX — архитектуре рекомендательной модели, которая позволяет рабо" />
+  <meta property="og:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/286_480.webp" />
+  <meta property="og:image:alt" content="Рекомендательная [RecSys Channel]" />
+  <meta property="article:published_time" content="2026-11-25T09:47:13+00:00" />
+  <meta property="article:author" content="Рекомендательная [RecSys Channel]" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ml-brand.github.io/RecSysChannel/assets/media/thumbs/286_480.webp" />
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="../../metrika.js"></script>
+</head>
+<body data-index-href="../index.html">
+  <header class="header">
+    <div class="container">
+      <div class="title-grid single-title">
+        <a class="grid-avatar" href="#" target="_blank" rel="noopener">
+          <img id="channelAvatar" class="channel-avatar" src="../../assets/channel_avatar.jpg" alt="Аватар канала"  />
+        </a>
+        <div class="grid-main">
+          <div class="title-head">
+            <a class="back-link" href="../index.html">← Ко всем постам</a>
+            <a class="badge-chip" id="siteTitleWrap" href="#" target="_blank" rel="noopener"><h1 id="siteTitle">Рекомендательная [RecSys Channel]</h1></a>
+            <div class="hero-actions">
+              <a id="subscribeBtn" class="subscribe-btn" href="https://t.me/+3NrSk0BmQ-QzZTMy" target="_blank" rel="noopener" >Подписаться</a>
+              <a class="icon-btn" href="../../post.html?id=286" aria-label="Открыть динамическую страницу поста">↺</a>
+              <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div id="promoBanner" class="promo-banner" hidden>
+    <div class="container promo-inner">
+      <span class="promo-text"><a href="https://t.me/addlist/5NH3RoVejEI1MGEy">Подпишись на все наши ML каналы. Они классные, отвечаем!</a></span>
+      <button id="promoClose" class="promo-close" type="button" aria-label="Скрыть плашку">×</button>
+    </div>
+  </div>
+  
+
+  <main class="container single-page">
+    <article id="postContainer" class="post post-page" data-post-id="286">
+      <div class="post-header">
+        <div class="right"><span class="post-date" data-iso-date="2026-11-25T09:47:13+00:00">2026-11-25 09:47 UTC</span></div>
+      </div>
+      <div class="post-body"><strong>TransX: Scaling Transformer-based Recommendation via Behavioral and Serving Stream Crossings [1/2]</strong><br><br>Разбираем <a href="https://arxiv.org/abs/2607.28940" rel="nofollow noopener noreferrer">статью</a> LinkedIn о TransX — архитектуре рекомендательной модели, которая позволяет работать с длинной историей пользователя, не обрабатывая её заново при каждом запросе.<br><br>Многие последовательные и генеративные рекомендательные модели объединяют действия пользователя, показы и обратную связь в один поток токенов. Это удобно для обучения, но создаёт две проблемы:<br><br>1) Пользовательские действия и показы происходят по-разному. Человек может искать, просматривать профили и публиковать контент независимо от рекомендаций. А обратная связь возникает только после того, как система что-то ему показала.<br><br>2) При каждом новом запросе приходится заново обрабатывать длинную историю пользователя, хотя большая часть вычислений от текущих кандидатов не зависит.<br><br>Авторы предлагают разделить эти процессы и вынести обработку истории из онлайн-ранжирования, сохранив при этом возможность учитывать каждого конкретного кандидата.<br><br>Входные данные разделяют на два потока:<br><br><strong>Behavioral stream</strong> — действия пользователя, которые происходят независимо от конкретного рекомендательного запроса.<br><br><strong>Serving stream</strong> — контекст запроса и кандидаты, которых система собирается показать пользователю.<br><br>Первый поток обрабатывает causal Transformer, которому доступна история за последние 180 дней. Причём модель не запускают заново при каждом запросе: представления пользовательских действий вычисляют заранее, в nearline, и сохраняют в кеше.<br><br>Благодаря causal attention при появлении нового события старые представления остаются актуальными. Поэтому историю можно обновлять постепенно, не пересчитывая её целиком.<br><br>Второй поток работает уже во время запроса. Каждый кандидат формирует свой query и через cross-attention обращается к сохранённым представлениям поведения пользователя.<br><br>Получается, что длинную историю достаточно обработать заранее, а онлайн выполнять только вычисления, которые зависят от конкретного кандидата.<br>Но даже если история уже закеширована, показывать каждому кандидату все действия за 180 дней слишком дорого.<br><br>Поэтому авторы предлагают использовать два источника контекста:<br><br><strong>Локальный</strong> — последние 10 действий пользователя. Они помогают учитывать его актуальные интересы.<br><br><strong>Глобальный</strong> — один токен, в который с помощью attention pooling собирается информация обо всей доступной истории, включая последние действия.<br>Так модель получает и свежий контекст, и общее представление об интересах пользователя.<br><br>Полный аттеншн по всей истории даёт немного лучшее качество по AUC, но требует 220 MFLOPs на кандидата против 60 у local-global cross-attention. Поэтому авторы выбирают более дешёвый вариант.<br><br><strong>Как избежать повторных вычислений</strong><br><strong><br></strong>В TransX есть два уровня переиспользования результатов.<br><br>Первый работает между запросами одного пользователя. Длинная история обрабатывается заранее и хранится в nearline-кеше. При новом событии достаточно обновить состояние, а не запускать трансформер на всей истории.<br><br>Второй — между кандидатами внутри одного запроса. Для выбранных представлений пользовательского поведения один раз вычисляют ключи и значения K/V. Затем каждый кандидат строит собственный Q и обращается к одним и тем же K/V через cross-attention.<br><br>При этом вычисления для конкретного кандидата всё равно выполняются отдельно. Но повторять одни и те же проекции пользовательской истории больше не нужно.<br><br><strong>Что в итоге<br></strong><br>Главная идея TransX — разделить вычисления, которые зависят от кандидата, и те, которые можно выполнить заранее. Это позволяет сохранить длинную пользовательскую историю и при этом значительно сократить нагрузку на онлайн-ранжирование.<br><br>Но здесь возникают новые вопросы: как поддерживать кеш актуальным, что делать при сбоях и насколько сильно такая архитектура ускоряет рекомендации на практике? Об этом — во второй части.<br><br>@RecSysChannel<br>Разбор подготовил <em><tg-emoji emoji-id="5224192932302565805">❣</tg-emoji></em> Артём Ваншулин<div class="media"><img class="media-img" loading="lazy" src="../../assets/media/thumbs/286_480.webp" srcset="../../assets/media/thumbs/286_480.webp 480w, ../../assets/media/286.jpg 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="" data-post-id="286" data-image-index="0" /></div></div>
+      <div class="actions">
+        <span>294 просмотров · 10 реакций</span>
+        <span class="action-links"><a href="https://t.me/RecSysChannel/286" target="_blank" rel="noopener">Открыть в Telegram</a> · <a href="../index.html">К списку постов</a> · <a href="./286.html">Ссылка на этот пост</a></span>
+      </div>
+    </article>
+
+    <div class="pager single-nav">
+      <a id="prevPost" class="nav-link disabled" href="#" style="visibility:hidden">← Более новый</a>
+      <a id="nextPost" class="nav-link" href="./283.html" style="visibility:visible">Более старый →</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span>based on <a href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">tg-to-gh-pages</a> (created by <a href="https://github.com/ml-brand" target="_blank" rel="noopener">ML Brand</a>)</span>
+        <a id="repoLink" href="https://github.com/ml-brand/tg-to-gh-pages" target="_blank" rel="noopener">Do the same with your channel.</a>
+        <span class="footer-links">
+          static copy ·
+          <a href="../../feed.xml" target="_blank" rel="noopener">RSS</a> ·
+          <a href="../../atom.xml" target="_blank" rel="noopener">Atom</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.__STATIC_POSTS = [{"id": 286, "media": [{"kind": "photo", "path": "../../assets/media/286.jpg", "thumb": "../../assets/media/thumbs/286_480.webp", "size": 94605, "mime": "image/jpeg", "name": null}]}];
+    window.__STATIC_META = {"title": "Рекомендательная [RecSys Channel]", "username": "RecSysChannel", "channel": "RecSysChannel", "last_sync_utc": "2026-11-25T10:31:11Z", "posts_count": 148, "last_seen_message_id": 286, "stats": {"new": 128, "updated": 32, "media_downloaded": 128}, "avatar": "assets/channel_avatar.jpg", "meta_schema_version": "1.0.0", "posts_schema_version": "1.0.0"};
+  </script>
+  <script src="../../common.js"></script>
+  <script src="../../static.js"></script>
+</body>
+</html>
